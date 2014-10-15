@@ -6,8 +6,9 @@
 	CakePlugin::routes();
 
 
+	//cms+blog+ecommerceCopyOfBrandsController.php
+	Router::mapResources(array("Sites",'Blog.Sites','Ecommerce.Sites'));
 	
-	Router::mapResources("Sites");
 	Router::parseExtensions('json');
 	
 	require CAKE . 'Config' . DS . 'routes.php';

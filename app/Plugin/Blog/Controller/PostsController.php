@@ -25,7 +25,7 @@ class PostsController extends BlogAppController {
 		$this->Post->recursive = 0;
 		$this->set('posts', $this->Paginator->paginate());
 		
-		$categories = ClassRegistry::init('Category')->find('list');
+		$categories = ClassRegistry::init('Blog.Category')->find('list');
 		$this->set('categories',$categories);
 	}
 
@@ -64,7 +64,7 @@ class PostsController extends BlogAppController {
 			}
 		}
 		
-		$categories = ClassRegistry::init('Category')->find('list');
+		$categories = ClassRegistry::init('Blog.Category')->find('list');
 		$this->set('categories',$categories);
 	}
 
@@ -94,7 +94,7 @@ class PostsController extends BlogAppController {
 			$this->request->data = $this->Post->find('first', $options);
 		}
 		
-		$categories = ClassRegistry::init('Category')->find('list');
+		$categories = ClassRegistry::init('Blog.Category')->find('list');
 		$this->set('categories',$categories);
 	}
 

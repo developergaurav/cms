@@ -14,6 +14,7 @@ class Category extends BlogAppModel {
  * @var string
  */
 	public $useDbConfig = 'blog';
+	public $actsAs = array('Containable');
 
 /**
  * Display field

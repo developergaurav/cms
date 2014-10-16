@@ -13,6 +13,7 @@ class Product extends EcommerceAppModel {
  * @var string
  */
 	public $useDbConfig = 'ecommerce';
+	
 
 /**
  * Display field

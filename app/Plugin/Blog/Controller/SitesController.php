@@ -70,32 +70,32 @@ public $components = array('RequestHandler');
 	public function blog_default_list($category_id = null){
 		if($category_id == null){
 			$data = $this->Post->find(
-					'all',
-					array(
-						'conditions' => array('Post.status' => 'active'),
-						'order' => array('created'=> 'asc'),
-						'limit' => 5
-					)
+				'all',
+				array(
+					'conditions' => array('Post.status' => 'active'),
+					'order' => array('created'=> 'asc'),
+					'limit' => 5
+				)
 			);
 		}else{
 			$data = $this->Post->find(
-					'all',
-					array(
-							'conditions' => array('Post.status' => 'active','Post.categories LIKE' => '%'. $category_id . '%',),
-							'order' => array('created'=> 'asc'),
-							'limit' => 5
-					)
+				'all',
+				array(
+					'conditions' => array('Post.status' => 'active','Post.categories LIKE' => '%'. $category_id . '%',),
+					'order' => array('created'=> 'asc'),
+					'limit' => 5
+				)
 			);
 		}
 		
 		$users = $this->User->find('list',array('fields'=>array('id','personal_details')));
 	
 		$this->set(
-				array(
-						'_serialize',
-						'data' => array('blog_post_default_list'=>$data,'users'=>$users),
-						'_jsonp' => true
-				)
+			array(
+				'_serialize',
+				'data' => array('blog_post_default_list'=>$data,'users'=>$users),
+				'_jsonp' => true
+			)
 		);
 		$this->render('json_render');
 	}
@@ -105,21 +105,21 @@ public $components = array('RequestHandler');
 	//latest posts
 	public function blog_latest_post(){
 		$data = $this->Post->find(
-				'list',
-				array(
-					'fields' => array('id','title'),
-					'conditions' => array('Post.status' => 'active'),
-					'order' => array('created'=> 'asc'),
-					'limit' => 10
-				)
+			'list',
+			array(
+				'fields' => array('id','title'),
+				'conditions' => array('Post.status' => 'active'),
+				'order' => array('created'=> 'asc'),
+				'limit' => 10
+			)
 		);
 	
 		$this->set(
-				array(
-						'_serialize',
-						'data' => array('blog_latest_post'=>$data),
-						'_jsonp' => true
-				)
+			array(
+				'_serialize',
+				'data' => array('blog_latest_post'=>$data),
+				'_jsonp' => true
+			)
 		);
 		$this->render('json_render');
 	}
@@ -130,20 +130,20 @@ public $components = array('RequestHandler');
 	//single posts
 	public function blog_single_post($id){
 		$data = $this->Post->find(
-				'all',
-				array(
-					'conditions' => array('Post.status' => 'active','Post.id'=>$id),
-				)
+			'all',
+			array(
+				'conditions' => array('Post.status' => 'active','Post.id'=>$id),
+			)
 		);
 	
 		$users = $this->User->find('list',array('fields'=>array('id','personal_details')));
 	
 		$this->set(
-				array(
-						'_serialize',
-						'data' => array('blog_post_default_list'=>$data,'users'=>$users),
-						'_jsonp' => true
-				)
+			array(
+				'_serialize',
+				'data' => array('blog_post_default_list'=>$data,'users'=>$users),
+				'_jsonp' => true
+			)
 		);
 		$this->render('json_render');
 	}

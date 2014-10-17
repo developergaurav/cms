@@ -21,7 +21,8 @@ class SitesController extends EcommerceAppController {
 		'Ecommerce.Brand',
 		'Ecommerce.Product',
 		'Ecommerce.Store',
-		'Ecommerce.Type'
+		'Ecommerce.Type',
+		'Ecommerce.Attribute'
 	);
 
 	public function beforeFilter(){
@@ -161,5 +162,22 @@ class SitesController extends EcommerceAppController {
 			)
 		);
 		$this->render('json_render');
-	}	
+	}
+
+/**
+ * product_attribute_list
+ */
+	public function product_attribute_list($type_id){
+		$data = $this->Attribute->find('all',array('conditions'=> array('Attribute.type_id'=> $type_id)));
+		$this->set(
+				array(
+					'_serialize',
+					'data' => array('ecommerce_product_attributes'=>$data),
+					'_jsonp' => true
+				)
+		);
+		$this->render('json_render');
+	}
+	
+	
 }

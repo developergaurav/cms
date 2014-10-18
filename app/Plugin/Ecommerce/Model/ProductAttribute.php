@@ -22,6 +22,8 @@ class ProductAttribute extends EcommerceAppModel {
  * @var string
  */
 	public $displayField = 'id';
+	
+	public $actsAs = array('Containable');
 
 /**
  * Validation rules

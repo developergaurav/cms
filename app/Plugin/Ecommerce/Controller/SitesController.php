@@ -14,7 +14,7 @@ class SitesController extends EcommerceAppController {
 	 *
 	 * @var array
 	 */
-	public $components = array('Paginator', 'Session','RequestHandler');
+	public $components = array('Paginator', 'Session','RequestHandler','Security');
 
 	public $uses = array(
 		'Ecommerce.Category',
@@ -27,17 +27,12 @@ class SitesController extends EcommerceAppController {
 
 	public function beforeFilter(){
 		parent::beforeFilter();
-		$this->response->header('Access-Control-Allow-Origin','*');
-		$this->response->header('Access-Control-Allow-Methods','*');
-		$this->response->header('Access-Control-Allow-Headers','X-Requested-With');
-		//$this->response->header('Access-Control-Allow-Headers','Content-Type, x-xsrf-token');
-		$this->response->header('Access-Control-Max-Age','172800');
 		
 		$this->Auth->allow();
 	}
 
 	public function beforeRender(){
-		//$this->response->header('Access-Control-Allow-Origin', '*');
+		$this->response->header('Access-Control-Allow-Origin', '*');
 	}
 
 

@@ -1,5 +1,6 @@
 <?php
 App::uses('TimeoutAppModel', 'Timeout.Model');
+App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 /**
  * Client Model
  *
@@ -57,4 +58,14 @@ class Client extends TimeoutAppModel {
 			),
 		),
 	);
+	
+	public function beforeSave($options = array()) {
+		if (isset($this->data[$this->alias]['password'])) {
+			$passwordHasher = new BlowfishPasswordHasher();
+			$this->data[$this->alias]['password'] = $passwordHasher->hash(
+					$this->data[$this->alias]['password'],'Blowfish'
+			);
+		}
+		return true;
+	}
 }

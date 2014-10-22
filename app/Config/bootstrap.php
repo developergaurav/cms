@@ -110,3 +110,5 @@ CakeLog::config('error', array(
 CakePlugin::load('Ecommerce', array('bootstrap' => false, 'routes' => false));
 
 CakePlugin::load('Blog', array('bootstrap' => false, 'routes' => false));
+
+CakePlugin::load('Timeout', array('bootstrap' => false, 'routes' => false));

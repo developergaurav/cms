@@ -20,12 +20,13 @@ class SitesController extends TimeoutAppController {
 	
 	public function beforeFilter(){
 		parent::beforeFilter();
+		$this->response->header('Access-Control-Allow-Origin', '*');
+		
 		$this->Auth->allow(array('client_registration','client_login'));
+		
 	}
 	
-	public function beforeRender(){
-		$this->response->header('Access-Control-Allow-Origin', '*');
-	}
+	
 	
 /*
  * cleint registraion
@@ -82,39 +83,46 @@ class SitesController extends TimeoutAppController {
 
 	
 	public function client_login(){
-		
+		$response = array();
 		if($this->request->is('post')){
+			//catch post ata
 			$data =  $this->request->input('json_decode',true);
+			
+			//process data
 			$login_data = array();
 			foreach($data as $key=>$value){
 				$login_data[$value['name']] =$value['value'];
 			}
-			$has_user = $this->Client->find('all',array('conditions'=>array('username'=>$login_data['username'])));
-			if(sizeof($has_user)>0){
-				$data = array();
-				$data['status'] = 'success';
-				$data['loggeduser'] = $has_user;
-			}else{
-				$data = array();
-				$data['status'] = 'error';
+			
+			//check user auth credential
+			$is_valid_user = $this->Client->processLogin($login_data['username'],$login_data['password']);
+			
+			if($is_valid_user != 'error'){
+				unset($is_valid_user['Client']['password']);
+				
+				$response['status'] = 'success';
+				$response['loggeduser'] = $is_valid_user;
+			} else {
+				$response['status'] = 'error';
+				$response['message'] = 'Username and Password does not match';
 			}
+			
+		//block other type of request.	
 		}else{
-			$data = array();
-			$data['status'] = 'error';
-			$data['message'] = 'Invalid Request.';
+			$response['status'] = 'error';
+			$response['message'] = 'Invalid Request.';
 		}
+		
+		//process the view
 		
 		$this->set(
 			array(
 				'_serialize',
-				'data' => array('client_login'=>$data),
+				'data' => array('client_login'=>$response),
 				'_jsonp' => true
 			)
 		);
 		$this->render('json_render');
 	}
-	
-	
-	
 
 }

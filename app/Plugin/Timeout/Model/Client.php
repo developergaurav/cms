@@ -68,4 +68,17 @@ class Client extends TimeoutAppModel {
 		}
 		return true;
 	}
+	
+	public function processLogin($username,$password){
+		$salt_data = $this->find('first',array('recursive'=>-1,'conditions'=>array('username'=>$username)));
+		if(sizeof($salt_data) > 0){
+			$hashed = Security::hash($password,'Blowfish',$salt_data['Client']['password']);
+			
+			if($salt_data['Client']['password'] == $hashed){
+				return $salt_data;
+			}
+		}
+		return 'error';
+	}
+//
 }

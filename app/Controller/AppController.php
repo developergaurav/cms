@@ -272,6 +272,10 @@ class AppController extends Controller {
 		
 		$permission_array['products']['admin_delete_product_image_by_id'] = 'admin_delete_product_image_by_id';
 		
+		$permission_array['product_orders']['admin_make_processing'] = 'admin_make_processing';
+		$permission_array['product_orders']['admin_make_completed'] = 'admin_make_completed';
+		$permission_array['product_orders']['admin_make_cancelled'] = 'admin_make_cancelled';
+		
 		if(isset($permission_array[$this->params['controller']][$this->params['action']])){
 			if($permission_array[$this->params['controller']][$this->params['action']] == $this->params['action']){
 				return true;

@@ -21,10 +21,24 @@ class ProductOrdersController extends EcommerceAppController {
  *
  * @return void
  */
+	protected $order_status = array(
+			'ordered'		=> 'Ordered',
+			'porcessing'	=> 'Processing',
+			'completed'		=> 'Completed',
+			'cancelled'		=> 'Cancelled'
+		);
+	
+	public function beforeFilter(){
+		parent::beforeFilter();
+		$this->set('order_status',$this->order_status );
+	}
 	public function admin_index() {
+		
 		$this->ProductOrder->recursive = 0;
 		$this->set('productOrders', $this->Paginator->paginate());
 	}
+	
+	
 
 /**
  * admin_view method
@@ -53,7 +67,7 @@ class ProductOrdersController extends EcommerceAppController {
 				$this->Session->setFlash('The product order has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('The product order could not be saved. Please, try again.','default',array('class'=>'alert alert-warnging'));
+				$this->Session->setFlash('The product order could not be saved. Please, try again.','default',array('class'=>'alert alert-warning'));
 			}
 		}
 	}
@@ -74,7 +88,7 @@ class ProductOrdersController extends EcommerceAppController {
 				$this->Session->setFlash('The product order has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('The product order could not be saved. Please, try again.','default',array('class'=>'alert alert-warnging'));
+				$this->Session->setFlash('The product order could not be saved. Please, try again.','default',array('class'=>'alert alert-warning'));
 			}
 		} else {
 			$options = array('conditions' => array('ProductOrder.' . $this->ProductOrder->primaryKey => $id));
@@ -98,8 +112,56 @@ class ProductOrdersController extends EcommerceAppController {
 		if ($this->ProductOrder->delete()) {
 			$this->Session->setFlash('The product order has been deleted.','default',array('class'=>'alert alert-success'));
 		} else {
-			$this->Session->setFlash('The product order could not be deleted. Please, try again.','default',array('class'=>'alert alert-warnging'));
+			$this->Session->setFlash('The product order could not be deleted. Please, try again.','default',array('class'=>'alert alert-warning'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	
+	public function admin_make_processing($id) {
+		if($this->request->is('Post')){
+			$this->ProductOrder->id = $id;
+			$this->ProductOrder->set(array('status'=>'porcessing'));
+			if($this->ProductOrder->save()){
+				$this->Session->setFlash('This product status is changed','default',array('class'=>'alert alert-success'));
+				
+			}else{
+				$this->Session->setFlash('Please Try again','default',array('class'=>'alert alert-warning'));
+			}
+			return $this->redirect(array('action' => 'index'));
+		}
+	
+	}
+	
+	public function admin_make_completed($id) {
+		if($this->request->is('Post')){
+			$this->ProductOrder->id = $id;
+			$this->ProductOrder->set(array('status'=>'completed','complete_date'=>date('Y-m-d H:i:s')));
+			if($this->ProductOrder->save()){
+				$this->Session->setFlash('This product status is changed','default',array('class'=>'alert alert-success'));
+	
+			}else{
+				$this->Session->setFlash('Please Try again','default',array('class'=>'alert alert-warning'));
+			}
+			return $this->redirect(array('action' => 'index'));
+		}
+	
+	}
+	
+	public function admin_make_cancelled($id) {
+		
+		if($this->request->is('Post')){
+			$this->ProductOrder->id = $id;
+			$this->ProductOrder->set(array('status'=>'cancelled','complete_date'=>date('Y-m-d H:i:s')));
+			if($this->ProductOrder->save()){
+				$this->Session->setFlash('This product status is changed','default',array('class'=>'alert alert-success'));
+	
+			}else{
+				$this->Session->setFlash('Please Try again','default',array('class'=>'alert alert-warning'));
+			}
+			return $this->redirect(array('action' => 'index'));
+		}
+	
+	}
+	
 }

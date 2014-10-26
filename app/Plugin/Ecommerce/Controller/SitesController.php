@@ -256,4 +256,37 @@ class SitesController extends EcommerceAppController {
 		
 	}
 	
+/*
+ * shoping history
+ */	
+	
+	public function shoping_history(){
+	
+		if($this->request->is('post')){
+			$post_data =  $this->request->input('json_decode',true);
+			$client_data = json_decode($post_data['client_details'],true);
+			$client_id = $client_data['Client']['id'];
+			$response = $this->ProductOrder->find(
+					'all',
+					array(
+						'conditions' => array(
+							'client_detail LIKE' => "%$client_id%"
+						),
+						'recursive'=>-1		
+					)
+				);
+		}else{
+			$response = array('message'=>'Invalid Request');
+		}
+		
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('ecommerce_history'=>$response),
+						'_jsonp' => true
+				)
+		);
+		$this->render('json_render');
+	}
+	
 }

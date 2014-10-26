@@ -140,6 +140,26 @@
 			</div>
 		</div>
 		
+		<!-- orders manager -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> Orders Manager <i class="fa fa-chevron-down pull-right"></i>','#OrderManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
+				</h4>
+			</div>
+			<div id="OrderManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('product_orders')));?>">
+				<div class="panel-body panel-body-custom">
+					<ul class="left-bar-menu-ul">
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Orders',['controller'=>'product_orders','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
+						</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		
 		
 		<!-- Blog manager -->
 		<div class="panel panel-default">

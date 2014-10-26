@@ -183,6 +183,10 @@ class AppController extends Controller {
 			[
 			'controller'	=> 'attribute_labels',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'product_orders',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
 		],
 		//blog

@@ -22,7 +22,8 @@ class SitesController extends EcommerceAppController {
 		'Ecommerce.Product',
 		'Ecommerce.Store',
 		'Ecommerce.Type',
-		'Ecommerce.Attribute'
+		'Ecommerce.Attribute',
+		'Ecommerce.ProductOrder'
 	);
 
 	public function beforeFilter(){
@@ -218,6 +219,41 @@ class SitesController extends EcommerceAppController {
 		);
 		$this->render('json_render');
 	}
-	
+
+/**
+ * checkout
+ */
+	public function checkout(){
+		if($this->request->is('post')){
+			$post_data =  $this->request->input('json_decode',true);
+			
+			$ready_data['ProductOrder']['client_detail'] 	= json_encode($post_data['client_details']);
+			$ready_data['ProductOrder']['order_detail'] 	= json_encode($post_data['cart']);
+			$ready_data['ProductOrder']['payment_detail'] 	= json_encode($post_data['paymentDetail']);
+			$ready_data['ProductOrder']['status'] 			= 'ordered';
+			if($this->ProductOrder->save($ready_data)){
+				$response['status'] = true;
+				$response['message'] = 'Your Order has been done.';
+			}else{
+				$response['status'] = false;
+				$response['message'] = 'Please try again';
+			}
+			//paymentDetail
+			
+			
+		}else{
+			$response = array('message'=>'Invalid Request');
+		}
+		
+		$this->set(
+			array(
+				'_serialize',
+				'data' => array('ecommerce_checkout'=>$response),
+				'_jsonp' => true
+			)
+		);
+		$this->render('json_render');
+		
+	}
 	
 }

@@ -22,7 +22,14 @@ class SitesController extends TimeoutAppController {
 		parent::beforeFilter();
 		$this->response->header('Access-Control-Allow-Origin', '*');
 		
-		$this->Auth->allow(array('client_registration','client_login'));
+		$this->Auth->allow(array(
+				'client_registration',
+				'client_login',
+				'client_profile',
+				'check_crrrent_password',
+				'update_password'
+			)
+		);
 		
 	}
 	
@@ -114,7 +121,6 @@ class SitesController extends TimeoutAppController {
 		}
 		
 		//process the view
-		
 		$this->set(
 			array(
 				'_serialize',
@@ -122,6 +128,119 @@ class SitesController extends TimeoutAppController {
 				'_jsonp' => true
 			)
 		);
+		$this->render('json_render');
+	}
+	
+/**
+ * 
+ */	
+	public function client_profile(){
+		if($this->request->is('post')){
+			$data =  $this->request->input('json_decode',true);
+			//get current profile
+			if($data['action'] == 'get_data'){
+				$profile_data = $this->Client->find(
+					'first',
+					array(
+							'conditions'=> array(
+								'id' => $data['client_id']		
+							)
+					)
+				);
+				
+				$this->set(
+					array(
+						'_serialize',
+						'data' => array('client_profile'=>$profile_data),
+						'_jsonp' => true
+					)
+				);
+			}
+			//update profile
+			else{
+				//$new_profile_data['Client']['details']= json_encode($data['new_data']);
+				$profile_data = array();
+				foreach($data['new_data'] as $key=>$value){
+					$profile_data[$value['name']] = $value['value'];
+				}
+				$new_profile_data['Client']['details'] = json_encode($profile_data);
+				
+				$this->Client->id = $data['client_id'];
+				if($this->Client->save($new_profile_data)){
+					$response['status'] = true;
+					$response['message'] = 'Profile has been updated';
+				}else{
+					$response['status'] = false;
+					$response['message'] = 'Profile update failed';
+				}
+				$this->set(
+					array(
+						'_serialize',
+						'data' => array('client_profile_update'=>$response),
+						'_jsonp' => true
+					)
+				);
+			}
+		}
+		$this->render('json_render');
+	}
+
+	/*
+	 * check current password
+	 */
+	public function check_crrrent_password(){
+		if($this->request->is('post')){
+			$post_data =  $this->request->input('json_decode',true);
+			$current_data = $this->Client->find('first',array('conditions'=>array('id'=> $post_data['client_id'])));
+			$password_is_valid = $this->Client->processLogin($current_data['Client']['username'], $post_data['current_password']);
+			if($password_is_valid == 'error'){
+				$password_validation['message'] = 'Password does not match';
+			}else{
+				$password_validation['message'] = '';
+			}
+		}
+		else{
+			$password_validation['message'] = 'Invalid request';
+		}
+		$this->set(
+			array(
+				'_serialize',
+				'data' => array('client_password_check'=>$password_validation),
+				'_jsonp' => true
+			)
+		);
+		
+		$this->render('json_render');
+	}
+
+/**
+ * update password
+ */	
+	public function update_password(){
+		if($this->request->is('post')){
+			$post_data =  $this->request->input('json_decode',true);
+			$this->Client->id = $post_data['client_id'];
+			$update_data['Client']['password'] = $post_data['new_password'];
+			if($this->Client->save($update_data)){
+				$response['status'] = true;
+				$response['message'] = 'Password has been updated';
+			}else{
+				$response['status'] = false;
+				$response['message'] = 'Password can not be updated';
+			}
+			
+		}else{
+			$response['message'] = 'Invalid Request';
+		}
+		
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('client_update_password'=>$response),
+						'_jsonp' => true
+				)
+		);
+		
 		$this->render('json_render');
 	}
 

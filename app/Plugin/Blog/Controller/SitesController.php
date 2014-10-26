@@ -125,8 +125,6 @@ public $components = array('RequestHandler');
 	}
 	
 	
-	
-	
 	//single posts
 	public function blog_single_post($id){
 		$data = $this->Post->find(
@@ -137,7 +135,6 @@ public $components = array('RequestHandler');
 		);
 	
 		$users = $this->User->find('list',array('fields'=>array('id','personal_details')));
-	
 		$this->set(
 			array(
 				'_serialize',
@@ -150,7 +147,6 @@ public $components = array('RequestHandler');
 	
 	
 	public function beforeRender(){
-		
 		$this->response->header('Access-Control-Allow-Origin', '*');
 	}
 }

@@ -14,7 +14,7 @@ class SitesController extends EcommerceAppController {
 	 *
 	 * @var array
 	 */
-	public $components = array('Paginator', 'Session','RequestHandler','Security');
+	public $components = array('RequestHandler');
 
 	public $uses = array(
 		'Ecommerce.Category',
@@ -27,7 +27,6 @@ class SitesController extends EcommerceAppController {
 
 	public function beforeFilter(){
 		parent::beforeFilter();
-		
 		$this->Auth->allow();
 	}
 
@@ -40,15 +39,25 @@ class SitesController extends EcommerceAppController {
 	 * barnd list
 	*/
 	public function brand_list(){
-		$data = $this->Brand->find('list',array('conditions'=>array('status'=>'active')));
-		$this->set(
+		if($this->request->is('get')){
+			$data = $this->Brand->find('list',array('conditions'=>array('status'=>'active')));
+			$this->set(
+					array(
+						'_serialize',
+						'data' => array('ecommerce_brands'=>$data),
+						'_jsonp' => true
+			
+					)
+			);
+		}else{
+			$this->set(
 			array(
 				'_serialize',
-				'data' => array('ecommerce_brands'=>$data),
+				'data' => array('ecommerce_brands'=>'Invalid Request'),
 				'_jsonp' => true
-
-			)
-		);
+				)
+			);
+		}
 		$this->render('json_render');
 	}
 
@@ -57,14 +66,25 @@ class SitesController extends EcommerceAppController {
 	 * category list
 	*/
 	public function category_list(){
-		$data = $this->Category->find('list',array('conditions'=>array('status'=>'active')));
-		$this->set(
-			array(
-				'_serialize',
-				'data' => array('ecommerce_categories'=>$data),
-				'_jsonp' => true
-			)
-		);
+		if($this->request->is('get')){
+			$data = $this->Category->find('list',array('conditions'=>array('status'=>'active')));
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_categories'=>$data),
+							'_jsonp' => true
+					)
+			);
+		}else{
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_categories'=>'Invalid Request'),
+							'_jsonp' => true
+					)
+			);
+		}
+		
 		$this->render('json_render');
 	}
 	
@@ -73,22 +93,33 @@ class SitesController extends EcommerceAppController {
  * get random product list
  */	
 	public function random_product_list(){
-		$data = $this->Product->find(
-			'all',
-			array(
-				'conditions' => array('status' => 'active'),
-				'order'		 => array('created'=> 'asc'),
-				'limit'		 => 20	
-			)	
-		);
+		if($this->request->is('get')){
+			$data = $this->Product->find(
+					'all',
+					array(
+							'conditions' => array('status' => 'active'),
+							'order'		 => array('created'=> 'asc'),
+							'limit'		 => 20
+					)
+			);
+			
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_product_list'=>$data),
+							'_jsonp' => true
+					)
+			);
+		}else{
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_product_list'=>'Invalid Request'),
+							'_jsonp' => true
+					)
+			);
+		}
 		
-		$this->set(
-			array(
-				'_serialize',
-				'data' => array('ecommerce_product_list'=>$data),
-				'_jsonp' => true
-			)
-		);
 		$this->render('json_render');
 	}
 	

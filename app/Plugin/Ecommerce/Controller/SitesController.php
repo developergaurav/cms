@@ -266,15 +266,60 @@ class SitesController extends EcommerceAppController {
 			$post_data =  $this->request->input('json_decode',true);
 			$client_data = json_decode($post_data['client_details'],true);
 			$client_id = $client_data['Client']['id'];
-			$response = $this->ProductOrder->find(
+			
+			//ordered
+			$data_ordered = $this->ProductOrder->find(
 					'all',
 					array(
 						'conditions' => array(
-							'client_detail LIKE' => "%$client_id%"
+							'client_detail LIKE' => "%$client_id%",
+							'status' => 'ordered'
 						),
 						'recursive'=>-1		
 					)
 				);
+			
+			//processing
+			$data_processing = $this->ProductOrder->find(
+				'all',
+				array(
+					'conditions' => array(
+						'client_detail LIKE' => "%$client_id%",
+						'status' => 'processing'
+					),
+					'recursive'=>-1
+				)
+			);
+			
+			//completed
+			$data_completed = $this->ProductOrder->find(
+				'all',
+				array(
+					'conditions' => array(
+						'client_detail LIKE' => "%$client_id%",
+						'status' => 'completed'
+					),
+					'recursive'=>-1
+				)
+			);
+			
+			$data_cancelled = $this->ProductOrder->find(
+				'all',
+				array(
+					'conditions' => array(
+						'client_detail LIKE' => "%$client_id%",
+						'status' => 'cancelled'
+					),
+					'recursive'=>-1
+				)
+			);
+			
+			$response['ordered'] = $data_ordered;
+			$response['processing'] = $data_processing;
+			$response['completed'] = $data_completed;
+			$response['cancelled'] = $data_cancelled;
+			
+			
 		}else{
 			$response = array('message'=>'Invalid Request');
 		}

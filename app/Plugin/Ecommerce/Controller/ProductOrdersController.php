@@ -23,7 +23,7 @@ class ProductOrdersController extends EcommerceAppController {
  */
 	protected $order_status = array(
 			'ordered'		=> 'Ordered',
-			'porcessing'	=> 'Processing',
+			'processing'	=> 'Processing',
 			'completed'		=> 'Completed',
 			'cancelled'		=> 'Cancelled'
 		);
@@ -121,7 +121,7 @@ class ProductOrdersController extends EcommerceAppController {
 	public function admin_make_processing($id) {
 		if($this->request->is('Post')){
 			$this->ProductOrder->id = $id;
-			$this->ProductOrder->set(array('status'=>'porcessing'));
+			$this->ProductOrder->set(array('status'=>'processing'));
 			if($this->ProductOrder->save()){
 				$this->Session->setFlash('This product status is changed','default',array('class'=>'alert alert-success'));
 				

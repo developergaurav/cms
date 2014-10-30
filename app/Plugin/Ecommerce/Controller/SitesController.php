@@ -1,5 +1,6 @@
 <?php
 App::uses('EcommerceAppController', 'Ecommerce.Controller');
+
 /**
  * Brands Controller
  *
@@ -8,13 +9,16 @@ App::uses('EcommerceAppController', 'Ecommerce.Controller');
  * @property SessionComponent $Session
  */
 class SitesController extends EcommerceAppController {
+	
+	//merchantid = 25227
+	//r8MRx39ZzNw6m5PEs7b4DYa67CtFf8d3WGj45Key
 
 	/**
 	 * Components
 	 *
 	 * @var array
 	 */
-	public $components = array('RequestHandler');
+	public $components = array('RequestHandler','Ecommerce.Icepay');
 
 	public $uses = array(
 		'Ecommerce.Category',
@@ -330,6 +334,31 @@ class SitesController extends EcommerceAppController {
 						'data' => array('ecommerce_history'=>$response),
 						'_jsonp' => true
 				)
+		);
+		$this->render('json_render');
+	}
+	
+	public function IcePayPaymentMethodList(){
+		$response = $this->Icepay->get_payment_methods();
+		
+		$this->set(
+			array(
+				'_serialize',
+				'data' => array('ecommerce_history'=>$response),
+				'_jsonp' => true
+			)
+		);
+		$this->render('json_render');
+	}
+	
+	public function payNow(){
+		$response = $this->Icepay->payByIcePay();
+		$this->set(
+			array(
+				'_serialize',
+				'data' => array('ecommerce_history'=>$response),
+				'_jsonp' => true
+			)
 		);
 		$this->render('json_render');
 	}

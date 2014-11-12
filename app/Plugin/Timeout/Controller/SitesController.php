@@ -243,5 +243,24 @@ class SitesController extends TimeoutAppController {
 		
 		$this->render('json_render');
 	}
+	
+	
+/**
+ * get brands
+ */	
+	
+	public function getBrands(){
+		$response = ClassRegistry::init('Ecommerce.Brand')->find('list',array('conditions'=>array('status'=>'active')));
+		
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('brand_list'=>$response),
+						'_jsonp' => true
+				)
+		);
+		
+		$this->render('json_render');
+	}
 
 }

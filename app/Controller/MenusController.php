@@ -24,11 +24,17 @@ class MenusController extends AppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Menu->recursive = 0;
-		$this->set('menus', $this->Paginator->paginate());
+		//
+		//$this->Menu->recursive = 0;
+		//$this->set('menus', $this->Paginator->paginate());
+		$menu_arrays = array();
+		foreach($this->menu_locations as $k=>$v){
+			$menu_arrays[$v] = $this->Menu->find('all',array('conditions'=>array('Menu.location'=>$k)));
+		}
+		
 		
 		$web_pages = ClassRegistry::init('WebPage')->find('list');
-		$this->set(compact('web_pages'));
+		$this->set(compact('web_pages','menu_arrays'));
 	}
 
 /**
@@ -58,6 +64,14 @@ class MenusController extends AppController {
 			if($data['Menu']['type'] == 'content'){
 				$data['Menu']['link_data'] = $data['Menu']['web_pages'];
 			}
+			
+			if($data['Menu']['type']  == 'functional'){
+				$data['Menu']['is_deleteable'] = 'yes,no';
+			}else{
+				$data['Menu']['is_deleteable'] = 'yes,yes';
+			}
+			
+			
 			unset($data['Menu']['web_pages']);
 			
 			$this->Menu->create();
@@ -87,10 +101,19 @@ class MenusController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {
 			
 			$data = $this->request->data;
-			if($data['Menu']['type'] == 'content'){
-				$data['Menu']['link_data'] = $data['Menu']['web_pages'];
+			if(isset($data['Menu']['type'])){
+				if($data['Menu']['type'] == 'content'){
+					$data['Menu']['link_data'] = $data['Menu']['web_pages'];
+				}
+				unset($data['Menu']['web_pages']);
+				
+				if($data['Menu']['type']  == 'functional'){
+					$data['Menu']['is_deleteable'] = 'yes,no';
+				}else{
+					$data['Menu']['is_deleteable'] = 'yes,yes';
+				}
 			}
-			unset($data['Menu']['web_pages']);
+				
 			
 			if ($this->Menu->save($data)) {
 				$this->Session->setFlash('The menu has been saved.','default',array('class'=>'alert alert-success'));

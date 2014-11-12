@@ -24,14 +24,17 @@
 		?>
 		<div data-ng-app ="menu" data-ng-controller="menuController">
 		<?php
+		if($this->data['Menu']['type'] != 'functional'):
+		
 			echo $this->Form->input('type',array('type'=>'select', 'existing_value'=>$this->request->data['Menu']['type'], 'data-ng-change'=>'checkMenuType()','options'=>$menu_types,'option_values'=>json_encode($menu_types), 'class'=>'form-control menu-types', 'data-ng-model'=>'menuTypes', 'div'=>array('class'=>'form-group')));
 			echo $this->Form->input('web_pages',array('options'=>$webpages, 'class'=>'form-control','div'=>array('class'=>'form-group web-page-list-on-menu')));
 			echo $this->Form->input('link_data',array('type'=>'text', 'class'=>'form-control','label'=> 'Url', 'div'=>array('class'=>'form-group menu-url-input' )));
+		endif;
+			
 		?>
 		</div>
 		<?php 
 		
-		echo $this->Form->input('order',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('status',array('options'=>$status, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 
 		echo $this->Form->button('Reset',array('type'=>'reset', 'class'=>'btn btn-warning','label'=>false,'div'=>false));

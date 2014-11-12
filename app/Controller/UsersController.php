@@ -172,7 +172,7 @@ class UsersController extends AppController {
 			}else{
 				$this->Session->setFlash('Password can not be changed','default',array('class'=>'alert alert-warning'));
 			}
-			
+			debug();
 		}
 	}
 	

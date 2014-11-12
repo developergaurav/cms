@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2014 at 08:40 AM
--- Server version: 5.5.38-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.4
+-- Generation Time: Nov 12, 2014 at 04:44 PM
+-- Server version: 5.5.40-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -43,9 +43,9 @@ CREATE TABLE IF NOT EXISTS `categories` (
 --
 
 INSERT INTO `categories` (`id`, `parent_id`, `title`, `slug`, `meta_keys`, `meta_description`, `description`, `status`) VALUES
-('5431830a-7f8c-4285-8f30-0a63cdd1d5ac', '', 'Hardware', '', 'dsf', 'dsfdsfdf', '<p>dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff </p>', 'active'),
-('54379416-cb24-48fa-8b4a-01e2cdd1d5ac', '5431830a-7f8c-4285-8f30-0a63cdd1d5ac', 'Software', '', 'dsf', 'dsf', '<p>dsfdsf<br></p>', 'active'),
-('54379ea4-3684-48c1-b531-04aacdd1d5ac', '54379416-cb24-48fa-8b4a-01e2cdd1d5ac', 'Mobile Apps', '', 'fdsf', 'dsf', '<p>dsf<br></p>', 'active');
+('5431830a-7f8c-4285-8f30-0a63cdd1d5ac', '', 'Blog Hardware', '', 'dsf', 'dsfdsfdf', '<p>dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff dfddsf dsfdfsdf dsfdsf dsfdsfdsfds dsfdsfds dsfdsfdsff </p>', 'active'),
+('54379416-cb24-48fa-8b4a-01e2cdd1d5ac', '5431830a-7f8c-4285-8f30-0a63cdd1d5ac', 'Blog Software', '', 'dsf', 'dsf', '<p>dsfdsf<br></p>', 'active'),
+('54379ea4-3684-48c1-b531-04aacdd1d5ac', '54379416-cb24-48fa-8b4a-01e2cdd1d5ac', 'Blog Mobile Apps', '', 'fdsf', 'dsf', '<p>dsf<br></p>', 'active');
 
 -- --------------------------------------------------------
 

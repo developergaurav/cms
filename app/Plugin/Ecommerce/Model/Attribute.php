@@ -65,15 +65,7 @@ class Attribute extends EcommerceAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		),
-		'AttributeLabel' => array(
-				'className' => 'Ecommerce.AttributeLabel',
-				'foreignKey' => 'attribute_label_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-		),
-		
+		)		
 	);
 
 /**

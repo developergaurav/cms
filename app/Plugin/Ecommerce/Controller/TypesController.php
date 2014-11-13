@@ -90,12 +90,7 @@ class TypesController extends EcommerceAppController {
 		} else {
 			$options = array('recursive'=>2, 'conditions' => array('Type.' . $this->Type->primaryKey => $id));
 			$this->request->data = $this->Type->find('first', $options);
-			
-			$attribute_labels = ClassRegistry::init('Ecommerce.AttributeLabel')->find('list',array('fields'=>array('id','label')));
-			$this->set(compact('attribute_labels'));
 		}
-		
-		
 	}
 
 /**

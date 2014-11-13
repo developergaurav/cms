@@ -24,7 +24,7 @@
 
 <div class="col-md-2 left-bar">
 	<div class="bar bar-primary bar-top">
-		<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Dashboard',['controller'=>'dashboards','action'=>'index','admin'=>true,'plugin'=>false],['escape'=>false,'class'=>'dashboard-link'])?>
+		<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Dashboard',['controller'=>'dashboards','action'=>'index','admin'=>true,'plugin'=>false],['escape'=>false,'class'=>'dashboard-link']); ?>
 	</div>
 	<div class="panel-group" id="accordion-menu">
 
@@ -127,10 +127,7 @@
 									<ul class="left-bar-menu-ul">
 										<li>
 											<?php echo $this->Html->link('<i class="fa fa-tags"></i> Type configuration',['controller'=>'types','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
-										</li>
-										<li>
-											<?php echo $this->Html->link('<i class="fa fa-tag"></i> Attribute Labels',['controller'=>'attribute_labels','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
-										</li>
+										</li>										
 									</ul>
 								</div>
 							</div>

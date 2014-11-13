@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 12, 2014 at 04:44 PM
+-- Generation Time: Nov 13, 2014 at 12:14 PM
 -- Server version: 5.5.40-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.5
 
@@ -44,27 +44,6 @@ INSERT INTO `attributes` (`id`, `type_id`, `title`, `attribute_label_id`) VALUES
 ('54295f97-5ae4-42e6-8d7d-0488cdd1d5ac', '54285033-ed24-4815-a4f5-1a13cdd1d5ac', 'Size', '542c0a52-3c8c-4eb4-8ceb-0f91cdd1d5ac'),
 ('5462f789-46d4-4e23-97b3-04b2c0a8bf11', '5462f789-8bb8-431a-8173-04b2c0a8bf11', 'Weight', '542c0a52-3c8c-4eb4-8ceb-0f91cdd1d5ac'),
 ('5462f871-38b8-4309-9e00-04aec0a8bf11', '5462f789-8bb8-431a-8173-04b2c0a8bf11', 'Size', '542c0a52-3c8c-4eb4-8ceb-0f91cdd1d5ac');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `attribute_labels`
---
-
-CREATE TABLE IF NOT EXISTS `attribute_labels` (
-  `id` char(36) NOT NULL,
-  `label` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `label` (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `attribute_labels`
---
-
-INSERT INTO `attribute_labels` (`id`, `label`) VALUES
-('542c0a68-5968-4acc-9da7-0acacdd1d5ac', 'color'),
-('542c0a52-3c8c-4eb4-8ceb-0f91cdd1d5ac', 'size');
 
 -- --------------------------------------------------------
 
@@ -421,6 +400,19 @@ INSERT INTO `types` (`id`, `title`, `description`, `status`) VALUES
 ('542817d1-5490-4af4-a8cc-04d1cdd1d5ac', 'Shirt', ' lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lorem ipsum de lorem  lor', 'active'),
 ('54285033-ed24-4815-a4f5-1a13cdd1d5ac', 'Belt', 'size', 'active'),
 ('5462f789-8bb8-431a-8173-04b2c0a8bf11', 'Electronics', 'fsdfsdfsdf', 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `type_categories`
+--
+
+CREATE TABLE IF NOT EXISTS `type_categories` (
+  `id` char(36) NOT NULL,
+  `type_id` char(36) NOT NULL,
+  `category_id` char(36) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -63,9 +63,6 @@ class TypesController extends EcommerceAppController {
 				$this->Session->setFlash('The type could not be saved. Please, try again.','default',array('class'=>'alert alert-warnging'));
 			}
 		}
-		
-		$attribute_labels = ClassRegistry::init('Ecommerce.AttributeLabel')->find('list',array('fields'=>array('id','label')));
-		$this->set(compact('attribute_labels'));
 	}
 
 /**

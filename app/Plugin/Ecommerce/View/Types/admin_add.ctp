@@ -37,7 +37,6 @@
 					<div class="row">
 						<div class="col-md-12">
 							<?php echo $this->Form->input('Attribute.title',array('label'=>'Name', 'class'=>'form-control attr-title', 'div'=>array('class'=>'form-group')));?>
-							<?php echo $this->Form->input('Attribute.attribute_label_id',array('options'=>$attribute_labels, 'label'=>'Label', 'class'=>'form-control attr-label', 'div'=>array('class'=>'form-group')));?>
 						</div>
 					</div>
 				</div>

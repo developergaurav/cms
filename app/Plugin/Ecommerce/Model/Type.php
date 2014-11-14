@@ -81,6 +81,19 @@ class Type extends EcommerceAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'TypeCategory' => array(
+			'className' => 'Ecommerce.TypeCategory',
+			'foreignKey' => 'type_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 		
 	);

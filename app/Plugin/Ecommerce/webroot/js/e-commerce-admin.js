@@ -7,20 +7,19 @@ function process_type_forms(type){
 		var l_v = attribute_labels.eq(i); // label
 		var attr  = new Array();
 		attr['title'] = t_v.val();
-		attr['attribute_label_id'] = l_v.val();
-		
-		
+		//attr['attribute_label_id'] = l_v.val();
+
 		//for edit
 		if(type == 'edit'){
 			if(t_v.attr('attribute_id') != ''){
 				attr['id'] = t_v.attr('attribute_id');
 			}
 		}
-		
+
 		attr['AttributeValue'] = new Array();
 		attributes.push(attr);
 	}
-	
+
 	//get attr_value
 	var attribute_value_holder  = $('.attr_value_holder');
 	for(var i = 0;i<attribute_value_holder.length;i++){
@@ -46,6 +45,7 @@ function process_type_forms(type){
 		});
 		attributes[i]['AttributeValue'] = attr_value;
 	}
+	
 	var type_data = new Array();
 	type_data['Type'] = new Array();
 	type_data['Type']['title'] = $('#TypeTitle').val();
@@ -53,12 +53,28 @@ function process_type_forms(type){
 	type_data['Type']['status'] = $('#TypeStatus').val();
 	type_data['Type']['Attribute'] = attributes;
 	
+	//process type categories
+	var all_categories = $('.category_ids');
+	var type_categories = new Array();
+	$.each(all_categories, function(ind,val){
+		var type_cat = new Array()
+		//console.log($(val).is(':checked'));
+		if($(val).is(':checked') == true){
+			type_cat.category_id = $(val).val();
+			type_categories.push(type_cat);
+			//type_data['Type']['TypeCategory'][ind]['category_id'] = $(val).val();
+		}
+	})
+	type_data['Type']['TypeCategory'] = type_categories;
+	
+	
+	
 	var post_url = 'ajax_add';
 	if(type == 'edit'){
 		type_data['Type']['id'] = $('#TypeId').val();
 	    post_url = '../ajax_edit';
 	}
-	
+
 	//post
 	$.ajax({
 		type	 : 'POST',
@@ -69,7 +85,7 @@ function process_type_forms(type){
 			var host = window.location.host;
 			var pathname = window.location.pathname;
 			var url_array = pathname.split('/');
-			console.log(url_array);
+		
 			var new_url = '';
 			var loop_length = url_array.length;
 			if(type == 'edit'){
@@ -83,7 +99,7 @@ function process_type_forms(type){
 					new_url += '/'+url_array[i];
 				}
 			}
-			window.location.replace(window.location.protocol+'//'+host+new_url);
+		window.location.replace(window.location.protocol+'//'+host+new_url);
 		}else{
 			var host = window.location.host;
 			var pathname = window.location.pathname;
@@ -103,21 +119,21 @@ function process_type_forms(type){
 					new_url += '/'+url_array[i];
 				}
 			}
-			
 			window.location.replace(window.location.protocol+'//'+host+new_url);
-			
 		}
 	}).error(function(){
 		window.location.replace(window.location.protocol+'//'+window.location.host+window.location.pathname);
 	});
 		
 	return false;
+	
+	
 }
 
 //add more attribute
 function add_more_attr(){
 	var attr_labels = $('.attr-label').html();
-	var attr_label_html = '<div class="form-group"><label for="AttributeAttributeLabelId">Label</label><select id="AttributeAttributeLabelId" class="form-control attr-label" name="data[Attribute][attribute_label_id]">'+attr_labels+'</select></div>';
+	
 	var attr_html ='\
 	<div class="attr">\
 		<div class="row">\
@@ -129,8 +145,8 @@ function add_more_attr(){
 				</div>\
 				<div class="row">\
 					<div class="col-md-12">\
-						<div class="form-group required"><label for="AttributeTitle">Name</label><input type="text" required="required" id="AttributeTitle" maxlength="100" class="form-control attr-title" name="data[Attribute][title]"></div>'+attr_label_html+
-					'</div>\
+						<div class="form-group required"><label for="AttributeTitle">Name</label><input type="text" required="required" id="AttributeTitle" maxlength="100" class="form-control attr-title" name="data[Attribute][title]"></div>\
+					</div>\
 				</div>\
 			</div>\
 			<div class="col-md-6 ">\

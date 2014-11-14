@@ -151,8 +151,20 @@ class MenusController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 	
-	//get web_page list
+	public function admin_sort_menu(){
+		//$this->Menu->recursive = 0;
+		//$this->set('menus', $this->Paginator->paginate());
+		$menu_arrays = array();
+		foreach($this->menu_locations as $k=>$v){
+			$menu_arrays[$v] = $this->Menu->find('all',array('conditions'=>array('Menu.location'=>$k)));
+		}
+		
+		$web_pages = ClassRegistry::init('WebPage')->find('list');
+		$this->set(compact('web_pages','menu_arrays'));
+	}
 	
+	
+	//get web_page list
 	private function getWebPages(){
 		return ClassRegistry::init('WebPage')->find('list');
 	}

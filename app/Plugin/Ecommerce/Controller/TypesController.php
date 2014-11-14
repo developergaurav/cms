@@ -21,6 +21,12 @@ class TypesController extends EcommerceAppController {
  *
  * @return void
  */
+	
+	private function getProductCategories(){
+		$data = ClassRegistry::init('Ecommerce.Category')->find('list');
+		return $data;
+	}
+	
 	public function admin_index() {
 		$this->Type->recursive = 0;
 		$this->set('types', $this->Paginator->paginate());
@@ -54,15 +60,31 @@ class TypesController extends EcommerceAppController {
  * @return void
  */
 	public function admin_add() {
+		
+	
+		
 		if ($this->request->is('post')) {
+			
+			$data = $this->request->data;
+			
+			//remove uncheck categories			
+			foreach($data['Type']['ProductCategory'] as $category_ind => $category_val){
+				if($category_val['category_id'] == 0){
+					unset($data['Type']['TypeCategory'][$category_ind]);
+				}
+			}
+			
+			//debug($data); die();
 			$this->Type->create();
-			if ($this->Type->save($this->request->data)) {
+			if ($this->Type>saveAssociated($data,array('deep' => true))) {
 				$this->Session->setFlash('The type has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('The type could not be saved. Please, try again.','default',array('class'=>'alert alert-warnging'));
 			}
 		}
+		$this->set('productCategories', $this->getProductCategories());
+		
 	}
 
 /**
@@ -88,6 +110,8 @@ class TypesController extends EcommerceAppController {
 			$options = array('recursive'=>2, 'conditions' => array('Type.' . $this->Type->primaryKey => $id));
 			$this->request->data = $this->Type->find('first', $options);
 		}
+		
+		$this->set('productCategories', $this->getProductCategories());
 	}
 
 /**
@@ -117,6 +141,7 @@ class TypesController extends EcommerceAppController {
 		
 		if($this->request->is('post')){
 			$data =  $this->request->data;
+			
 			
 			//pr($data);die();
 			$this->Type->create();

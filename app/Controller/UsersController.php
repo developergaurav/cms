@@ -146,7 +146,7 @@ class UsersController extends AppController {
 			}
 		}
 		if($this->Auth->login()){
-			$this->redirect(array('controller'=>'dashboards','action'=>'index','admin'=>true));
+			//$this->redirect(array('controller'=>'dashboards','action'=>'index','admin'=>true));
 		}
 	}
 
@@ -158,6 +158,7 @@ class UsersController extends AppController {
 	
 	
 	public function admin_signout() {
+		$this->Session->destroy();
 		return $this->redirect($this->Auth->logout());
 	}
 	

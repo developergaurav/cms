@@ -201,6 +201,8 @@ class AppController extends Controller {
 		$permission_array['product_orders']['admin_make_processing'] = 'admin_make_processing';
 		$permission_array['product_orders']['admin_make_completed'] = 'admin_make_completed';
 		$permission_array['product_orders']['admin_make_cancelled'] = 'admin_make_cancelled';
+		$permission_array['categories']['admin_sort'] = 'admin_sort';
+		$permission_array['brands']['admin_sort'] = 'admin_sort';
 		
 		if(isset($permission_array[$this->params['controller']][$this->params['action']])){
 			if($permission_array[$this->params['controller']][$this->params['action']] == $this->params['action']){

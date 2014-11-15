@@ -14,9 +14,9 @@
 <div class="row bar bar-secondary">
 	<div class="col-md-12">
 		<?php echo $this->Html->link('<i class=\'glyphicon glyphicon-plus-sign\'></i> Add Categories', array('action' => 'add','admin'=>true),array('escape'=>false,'class'=>'btn btn-success')); ?>
+		<?php echo $this->Html->link('<i class=\'glyphicon glyphicon-th-list\'></i> Sort Categories', array('action' => 'sort','admin'=>true),array('escape'=>false,'class'=>'btn btn-info')); ?>
 	</div>	
 </div>
-
 <div class="row bar bar-third">
 	<div class="col-md-12">
 		<div class="table-responsive">

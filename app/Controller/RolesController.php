@@ -77,6 +77,7 @@ class RolesController extends AppController {
 			$data = $this->request->data;
 			$permissions = json_encode($data['permission']);
 			$data['Role']['accesslist'] = $permissions;
+			
 			unset($data['permission']);
 			if ($this->Role->save($data)) {
 				$this->Session->setFlash('The role has been saved.','default',array('class'=>'alert alert-success'));

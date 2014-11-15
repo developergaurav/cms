@@ -14,6 +14,8 @@ class Category extends EcommerceAppModel {
  * @var string
  */
 	public $useDbConfig = 'ecommerce';
+	
+	public $actsAs = array('Containable');
 
 /**
  * Display field

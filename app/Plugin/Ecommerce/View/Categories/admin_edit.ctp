@@ -16,7 +16,7 @@
 	echo $this->Form->create('Category',array('class'=>'form')); 
 	
 		echo $this->Form->input('id',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-		echo $this->Form->input('parent_id',array('class'=>'form-control','empty'=>true, 'div'=>array('class'=>'form-group')));
+		echo $this->Form->input('parent_id',array('options'=>$parentCategories,'empty'=>true, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));

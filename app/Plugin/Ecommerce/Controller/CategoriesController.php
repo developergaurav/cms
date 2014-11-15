@@ -106,4 +106,24 @@ class CategoriesController extends EcommerceAppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	public function admin_sort() {
+		$data = $this->Category->find('threaded',
+				array(
+						'contain'=> array(),
+						'fields' => array('id','title','order','parent_id'),
+						'order'  => array('order' => 'asc'),
+						'recursive' => 2,
+						//'conditions' => array('Category.parent_id != ' => '')
+					)
+		);
+		$tree_data = array();
+		foreach($data as $k=>$v){
+			if($v['Category']['parent_id'] == ''){
+				array_push($tree_data, $v);
+			}
+		}
+		
+		pr($tree_data);
+	}
 }

@@ -25,7 +25,6 @@
 				</div>
 				<div class="panel-body category-brand-box">
 				<?php
-				
 					static $j = 0;
 					foreach($productCategories as $c_id => $c_title):
 					

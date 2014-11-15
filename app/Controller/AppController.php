@@ -1,6 +1,5 @@
 <?php
 App::uses('Controller', 'Controller');
-
 class AppController extends Controller {
 	//all components
 	public $components = array(
@@ -32,15 +31,8 @@ class AppController extends Controller {
 		        ),
 				'authorize' => array('Controller'),
 				//'authError' => 'You don\'t have permission to access those area.',
-				
 			),
-			
 	);
-	
-	
-	
-
-	
 	
 	public $acl_array = [
 		//cms
@@ -51,7 +43,7 @@ class AppController extends Controller {
 			],
 			[
 			'controller'	=> 'menus',
-			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete','admin_sort_menu']
 			],
 			[
 			'controller'	=> 'users',
@@ -72,7 +64,6 @@ class AppController extends Controller {
 		],
 		
 		//ecommerece
-	
 		'ecommerce' => [
 			[
 			'controller'	=> 'brands',
@@ -149,7 +140,7 @@ class AppController extends Controller {
 		'main'	 => 'Main',
 		'left'	 => 'Left',
 		'right'	 => 'Right',
-		'footer_top'	=> 'Footer Top',
+		'footer_top'=> 'Footer Top',
 		'footer' => 'Footer'
 	];
 	public $menu_types = [
@@ -166,7 +157,6 @@ class AppController extends Controller {
 	
 	public function beforeFilter(){
 		parent::beforeFilter();
-		
 		$this->set('acl_array',$this->acl_array);
 		$this->set('status', $this->status);
 		$this->set('site_status', $this->site_status);
@@ -176,15 +166,11 @@ class AppController extends Controller {
 		
 		$this->set('auth_status',$this->Auth->loggedIn());
 		$this->set('auth_user',$this->Auth->user());
-		
 	}
 	
 	public function isAuthorized($user = null){
-		
 		$permission_array = json_decode($user['Role']['accesslist'],true);
-		
 		$permission_array['dashboards']['admin_index'] = 'admin_index';
-		
 		//users permission
 		$permission_array['users']['admin_change_password'] = 'admin_change_password';
 		$permission_array['users']['admin_login'] = 'admin_login';
@@ -197,7 +183,6 @@ class AppController extends Controller {
 		$permission_array['media']['admin_ajax_uploader'] = 'admin_ajax_uploader';
 		
 		$permission_array['products']['admin_delete_product_image_by_id'] = 'admin_delete_product_image_by_id';
-		
 		$permission_array['product_orders']['admin_make_processing'] = 'admin_make_processing';
 		$permission_array['product_orders']['admin_make_completed'] = 'admin_make_completed';
 		$permission_array['product_orders']['admin_make_cancelled'] = 'admin_make_cancelled';
@@ -209,16 +194,8 @@ class AppController extends Controller {
 				return true;
 			}
 		}
-		
 		//$this->Session->setFlash('default','auth', array('class'=>'alert alert-warning'));
 		$this->Auth->flash['params']['class'] = 'alert alert-danger';
 		return false;
-		
 	}
-	
-	
-	
-	
-	
-	
 }

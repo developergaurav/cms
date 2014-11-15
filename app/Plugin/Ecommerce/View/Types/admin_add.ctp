@@ -12,10 +12,32 @@
 
 <div class="row bar bar-third">
 	<div class="col-md-12">
+    <div onclick="process_type_forms()">sdfdsf</div>
 	<?php 
 	echo $this->Form->create('Type',array('class'=>'form','onsubmit'=>'process_type_forms();return false;')); 
 	?>
 	<div class="form-section-heading">Product Type details </div>
+	
+	<!-- Category list show-->
+                  <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Categories</div>
+                        </div>
+                        <div class="panel-body category-brand-box">
+                        <?php 
+                            static $j = 0;
+                            foreach($productCategories as $c_id => $c_title):
+                                echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Type.TypeCategory.{$j}.category_id",array('class'=>'category_ids', 'type'=>'checkbox','value'=>$c_id,'label'=>false,'div'=>false))." {$c_title}</label>";
+                            $j++;
+                            endforeach;
+                        ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- End show category list-->
+	
+	
 	
 	<?php	
 		echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
@@ -26,8 +48,7 @@
 	<div class="attr-holder">
 		<div class="attr">
 			<div class="row">
-				
-				<!--  attribute -->
+                <!--  attribute -->
 				<div class="col-md-6">
 					<div class="row">
 						<div class="col-md-12">
@@ -37,7 +58,6 @@
 					<div class="row">
 						<div class="col-md-12">
 							<?php echo $this->Form->input('Attribute.title',array('label'=>'Name', 'class'=>'form-control attr-title', 'div'=>array('class'=>'form-group')));?>
-							<?php echo $this->Form->input('Attribute.attribute_label_id',array('options'=>$attribute_labels, 'label'=>'Label', 'class'=>'form-control attr-label', 'div'=>array('class'=>'form-group')));?>
 						</div>
 					</div>
 				</div>

@@ -26,7 +26,8 @@ class SitesController extends AppController {
 						'conditions'=>array(
 							'Menu.status'=>'active',
 							'Menu.location'=>"{$key}"
-						)
+						),
+						'order' => array('Menu.order' => 'ASC')
 					)
 				);
 		}

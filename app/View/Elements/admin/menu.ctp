@@ -63,7 +63,7 @@
 							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> List All Menu',['controller'=>'menus','action'=>'index','admin'=>true,'plugin'=>false],['escape'=>false]);?>
 						</li>
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-link"></i> New Menu',['controller'=>'menus','action'=>'add','admin'=>true,'plugin'=>false],['escape'=>false]);?>
+							<?php echo $this->Html->link('<i class="fa fa-link"></i> Sort Menu',['controller'=>'menus','action'=>'sort_menu','admin'=>true,'plugin'=>false],['escape'=>false]);?>
 						</li>
 					</ul>
 				</div>

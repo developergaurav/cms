@@ -133,15 +133,25 @@ class SitesController extends EcommerceAppController {
  * product_list_by_category
  */	
 	public function product_list_by_category($id){
-		$data = $this->Product->ProductCategory->find(
+		$data = $this->Product->find(
 			'all',
 			array(
-				'conditions'	=> array(
-					'ProductCategory.category_id' 		=> $id,
-				)
+				'contain' => array(
+					'ProductCategory' => array(
+						'conditions'	=> array(
+							'ProductCategory.category_id'=> $id,
+						)
+							
+					),
+					'ProductImage'
+				),
+				'conditions' => array(
+					'Product.status' => 'active'		
+				),
+				'order' => array('modified' => 'asc')
+				
 			)
 		);
-		
 		$this->set(
 			array(
 				'_serialize',
@@ -158,12 +168,21 @@ class SitesController extends EcommerceAppController {
  * product_list_by_brand
  */
 	public function product_list_by_brand($id){
-		$data = $this->Product->ProductBrand->find(
+		$data = $this->Product->find(
 			'all',
 			array(
+				'contain' => array(
+					'ProductBrand'=> array(
+						'conditions' => array(
+							'ProductBrand.brand_id' => $id		
+						)		
+					),
+					'ProductImage'
+				),
 				'conditions'	=> array(
-					'ProductBrand.brand_id' 		=> $id,
-				)
+					'Product.status' 		=> 'active',
+				),
+				'order' => array('modified' => 'asc')
 			)
 		);
 	

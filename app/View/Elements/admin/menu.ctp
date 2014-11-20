@@ -77,7 +77,7 @@
 					<?php echo $this->Html->link('<i class="fa fa-users"></i> User Manager <i class="fa fa-chevron-down pull-right"></i>','#userManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
-			<div id="userManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('default'),'controllers'=>array('users')));//check_menu_active($this->params['controller'],array('users'));?>">
+			<div id="userManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('default'),'controllers'=>array('users','roles')));//check_menu_active($this->params['controller'],array('users'));?>">
 				<div class="panel-body panel-body-custom">
 					<ul class="left-bar-menu-ul">
 						<li>
@@ -141,7 +141,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
-					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> Orders Manager <i class="fa fa-chevron-down pull-right"></i>','#OrderManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
+					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> Order Manager <i class="fa fa-chevron-down pull-right"></i>','#OrderManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
 			<div id="OrderManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('product_orders')));?>">

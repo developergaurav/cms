@@ -150,3 +150,8 @@ input[type="file"]{
 .row-divider-upload{
 	clear: both !important;
 }
+
+.action{
+	min-width : 200px !important;
+	
+}

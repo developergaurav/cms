@@ -278,30 +278,35 @@ class ProductsController extends EcommerceAppController {
 	
 /*private methods */	
 	
+	//get product types
 	private function getProductTypes(){
 		$data = ClassRegistry::init('Ecommerce.Type')->find('list');
 		return $data;
 	}
 	
+	//get product categories grouped by product types
 	private function getProductCategories(){
+		$category_list_data = ClassRegistry::init('Ecommerce.Category')->find('list',array('fields'=>array('id','title'),'recursive'=>-1));
 		$type_category_list_data = ClassRegistry::init('Ecommerce.TypeCategory')->find('all',array('fields'=>array('type_id','category_id'),'recursive'=>-1));
 		$type_category_list = array();
 		foreach($type_category_list_data as $k=>$v){
 			if(isset($type_category_list[$v['TypeCategory']['type_id']])){
-				array_push($type_category_list[$v['TypeCategory']['type_id']], $v['TypeCategory']['category_id']);
+				$type_category_list[$v['TypeCategory']['type_id']]['categories'][$v['TypeCategory']['category_id']] = $category_list_data[$v['TypeCategory']['category_id']];
 			}else{
 				$type_category_list[$v['TypeCategory']['type_id']] = array();
-				array_push($type_category_list[$v['TypeCategory']['type_id']], $v['TypeCategory']['category_id']);
+				$type_category_list[$v['TypeCategory']['type_id']]['categories'][$v['TypeCategory']['category_id']] = $category_list_data[$v['TypeCategory']['category_id']];
 			}
 		}
 		return $type_category_list;
 	}
 	
+	//get all brand list
 	private function getProductBrands(){
 		$data = ClassRegistry::init('Ecommerce.Brand')->find('list');
 		return $data;
 	}
 	
+	//get attributes associated with type
 	private function getProductTypeAndAttributes(){
 		$data = ClassRegistry::init('Ecommerce.Type')->find('all',array(
 			'fields' => array('id','title'),
@@ -318,14 +323,6 @@ class ProductsController extends EcommerceAppController {
 	
 	// 
 	protected function update_images($product_id, $image_files){
-		/*
-		 * data processing
-		 */
-		
-		//newly added images
-		
-		//new add images
-		
 		$final_images['ProductImage'] = array();
 		
 		$totaly_newly_added = array();

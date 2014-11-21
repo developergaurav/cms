@@ -4,6 +4,7 @@ var product = angular.module('product',[]);
 product.controller('ProductAttributeController', ['$scope', function($scope) {
 	$scope.AttrData = JSON.parse($('.AttrDataHolder').attr('attribute_array'));
 	$scope.option_list =JSON.parse($('.product_type').attr('option_values'));
+	$scope.type_categories = JSON.parse($('.product_type').attr('type_categories'));
 	
 	//check is edit
 	 var is_edit_form = function(){
@@ -16,7 +17,7 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 	
 	//set default product type 
 	$scope.defaultSelectedType = function(){
-		
+		//DEFAULT ATTRIBUTE
 		if(angular.isUndefined($('.product_type').attr('selected_value')) == true){
 			var i = 0;
 			$.each($scope.option_list,function(ind,val){
@@ -37,14 +38,20 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 	
 	//watch productType and filter attributes and values
 	$scope.selected_attr = new Object();
-	
+
 	$scope.$watch('productType',function(){
 		if($scope.productType != undefined){
+			//process attribute by selected type
 			$.each($scope.AttrData,function(ind,val){
 				if(val.Type.id == $scope.productType){
 					$scope.selected_attr = val.Attribute;
 				}
 			});
+			
+			//process category by selected type
+			$scope.selected_type_categories = $scope.type_categories[$scope.productType];
+		
+			
 		}else{
 			$scope.defaultSelectedType();
 		}
@@ -117,6 +124,10 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 		$('.attr-inputs').empty().html(attr_html);
 		
 	});
+	
+	$scope.$watch('selected_type_categories',function(ind,val){
+		console.log(ind)
+	})
 	
 }]);
 

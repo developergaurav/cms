@@ -44,21 +44,19 @@
 				$option_values = json_encode($productTypes);
 				echo $this->Form->input('type_id',array('type'=>'select', 'options'=>$productTypes, 'type_categories' => json_encode($productCategories), 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','div'=>array('class'=>'form-group')));
 			?>
+			{{selected_type_categories}}
 			</div>
 			<div class = "row">
 				<div class="col-md-6">
 					<div class="panel panel-info">
 						<div class="panel-heading">
-							<div class="panel-title">Categories</div>
+							<div class="panel-title">Categories </div>
 						</div>
 						<div class="panel-body category-brand-box">
-						<?php 
-							static $j = 0;
-							foreach($productCategories as $c_id => $c_title):
-								echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductCategory.{$j}.category_id",array('type'=>'checkbox','value'=>$c_id,'label'=>false,'div'=>false))." {$c_title}</label>";
-							$j++;
-							endforeach;
-						?>
+						
+							<label class='checkbox' style='margin-left : 20px;' data-ng-repeat="cat in selected_type_categories">
+								<input id="ProductProductCategory0CategoryId" type="checkbox" value="542817d1-5490-4af4-a8cc-04d1cdd1d5ac" name="data[Product][ProductCategory][0][category_id]">
+							</label>
 						</div>
 					</div>
 				</div>

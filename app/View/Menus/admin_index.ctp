@@ -30,7 +30,7 @@
 								<th>Type</th>
 								<th>Link</th>
 								<th>Status</th>
-								<th class="text-right">Actions</th>
+								<th class="text-right action">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -64,7 +64,7 @@
 									echo "<strong class='danger'>".$status[$value['Menu']['status']]."</strong>";?>
 								</td>
 								
-								<td class="text-right">   
+								<td class="text-right action">   
 									<?php 
 										if($value['Menu']['is_deleteable'] == 'yes,yes'):
 											 echo $this->Html->link('<i class=\'glyphicon glyphicon-edit\'></i> Edit', array('action' => 'edit',$value['Menu']['id'],'admin'=>true),array('escape'=>false,'class'=>'btn btn-warning'))." ";

@@ -16,49 +16,13 @@
 	echo $this->Form->create('Product',array('class'=>'form','type'=>'file')); 
 	?>
 	
-	<div class = "row">
-		<div class="col-md-6">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<div class="panel-title">Categories</div>
-				</div>
-				<div class="panel-body category-brand-box">
-				<?php 
-					static $j = 0;
-					foreach($productCategories as $c_id => $c_title):
-						echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductCategory.{$j}.category_id",array('type'=>'checkbox','value'=>$c_id,'label'=>false,'div'=>false))." {$c_title}</label>";
-					$j++;
-					endforeach;
-				?>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-md-6">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<div class="panel-title">Brands</div>
-				</div>
-				<div class="panel-body category-brand-box">
-				<?php 
-					static $i = 0;
-					foreach($productBrands as $b_id => $b_title):
-						echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductBrand.{$i}.brand_id",array('type'=>'checkbox','value'=>$b_id,'label'=>false,'div'=>false))." {$b_title}</label>";
-					$i++;
-					endforeach;
-				?>
-				</div>
-			</div>
-		</div>
-	</div>
-	
 	<div class="row">
 		<div class="col-md-6">
 			<?php
 				echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('price',array('label'=>'Base Price', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+				echo $this->Form->input('price',array('label'=>'Base Price','min'=>'0', 'class'=>'form-control','div'=>array('class'=>'form-group')));
 			?>
 		</div>
 		<div class="col-md-6">
@@ -75,12 +39,48 @@
 	
 	<div class = "row">
 		<div class="col-md-12" ng-app='product'>
-			<div  ng-controller='ProductAttributeController' class="AttrDataHolder" attribute_array ='<?php echo $productAttributes;?>'>
+			<div  ng-controller='ProductAttributeController' class="AttrDataHolder"  attribute_array ='<?php echo $productAttributes;?>'>
 			<?php
 				$option_values = json_encode($productTypes);
-				echo $this->Form->input('type_id',array('type'=>'select', 'options'=>$productTypes, 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','div'=>array('class'=>'form-group')));
+				echo $this->Form->input('type_id',array('type'=>'select', 'options'=>$productTypes, 'type_categories' => json_encode($productCategories), 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','div'=>array('class'=>'form-group')));
 			?>
 			</div>
+			<div class = "row">
+				<div class="col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title">Categories</div>
+						</div>
+						<div class="panel-body category-brand-box">
+						<?php 
+							static $j = 0;
+							foreach($productCategories as $c_id => $c_title):
+								echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductCategory.{$j}.category_id",array('type'=>'checkbox','value'=>$c_id,'label'=>false,'div'=>false))." {$c_title}</label>";
+							$j++;
+							endforeach;
+						?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title">Brands</div>
+						</div>
+						<div class="panel-body category-brand-box">
+						<?php 
+							static $i = 0;
+							foreach($productBrands as $b_id => $b_title):
+								echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductBrand.{$i}.brand_id",array('type'=>'checkbox','value'=>$b_id,'label'=>false,'div'=>false))." {$b_title}</label>";
+							$i++;
+							endforeach;
+						?>
+						</div>
+					</div>
+				</div>
+			</div>
+	
 			<div class="row attr-inputs"></div>
 			
 			<!-- Upload Images -->

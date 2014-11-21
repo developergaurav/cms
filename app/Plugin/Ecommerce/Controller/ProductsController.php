@@ -284,8 +284,17 @@ class ProductsController extends EcommerceAppController {
 	}
 	
 	private function getProductCategories(){
-		$data = ClassRegistry::init('Ecommerce.Category')->find('list');
-		return $data;
+		$type_category_list_data = ClassRegistry::init('Ecommerce.TypeCategory')->find('all',array('fields'=>array('type_id','category_id'),'recursive'=>-1));
+		$type_category_list = array();
+		foreach($type_category_list_data as $k=>$v){
+			if(isset($type_category_list[$v['TypeCategory']['type_id']])){
+				array_push($type_category_list[$v['TypeCategory']['type_id']], $v['TypeCategory']['category_id']);
+			}else{
+				$type_category_list[$v['TypeCategory']['type_id']] = array();
+				array_push($type_category_list[$v['TypeCategory']['type_id']], $v['TypeCategory']['category_id']);
+			}
+		}
+		return $type_category_list;
 	}
 	
 	private function getProductBrands(){

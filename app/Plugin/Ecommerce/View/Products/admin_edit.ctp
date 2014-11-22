@@ -17,52 +17,7 @@
 	echo $this->Form->create('Product',array('class'=>'form','type'=>'file')); 
 	?>
 	
-	<div class = "row">
-		<div class="col-md-6">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<div class="panel-title">Categories</div>
-				</div>
-				<div class="panel-body category-brand-box">
-				<?php
-					static $j = 0;
-					foreach($productCategories as $c_id => $c_title):
-					
-					if(array_search("{$c_id}", $prduct_current_data['ProductCategory']) === false){
-						$checked = false;
-					}else{
-						$checked = true;
-					}
-						echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductCategory.{$j}.category_id",array('type'=>'checkbox','value'=>$c_id,'label'=>false,'checked'=>$checked, 'div'=>false))." {$c_title}</label>";
-					$j++;
-					endforeach;
-				?>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-md-6">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<div class="panel-title">Brands</div>
-				</div>
-				<div class="panel-body category-brand-box">
-				<?php 
-					static $i = 0;
-					foreach($productBrands as $b_id => $b_title):
-						if(array_search("{$b_id}", $prduct_current_data['ProductBrand']) === false){
-							$checked = false;
-						}else{
-							$checked = true;
-						}
-						echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductBrand.{$i}.brand_id",array('type'=>'checkbox','value'=>$b_id,'checked' => $checked, 'label'=>false,'div'=>false))." {$b_title}</label>";
-					$i++;
-					endforeach;
-				?>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	<div class="row">
 		<div class="col-md-6">
 			<?php
@@ -70,7 +25,7 @@
 				echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('price',array('label'=>'Base Price', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+				echo $this->Form->input('price',array('label'=>'Base Price', 'min'=>0, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 			?>
 		</div>
 		<div class="col-md-6">
@@ -89,8 +44,49 @@
 			<div ng-app='product' ng-controller='ProductAttributeController' class="AttrDataHolder" attribute_array ='<?php echo $productAttributes;?>'>
 			<?php
 				$option_values = json_encode($productTypes);
-				echo $this->Form->input('type_id',array('type'=>'select', 'options'=>$productTypes, 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','selected_value'=>$this->request->data['Product']['type_id'], 'div'=>array('class'=>'form-group')));
+				echo $this->Form->input('type_id',array('type'=>'select', 'type_categories' => json_encode($productCategories), 'options'=>$productTypes, 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','selected_value'=>$this->request->data['Product']['type_id'], 'div'=>array('class'=>'form-group')));
 			?>
+			
+				<div class = "row">
+					<div class="col-md-6">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Categories</div>
+							</div>
+							
+							<div class="panel-body category-brand-box current_categories" data-current-selected-categories = '<?php echo json_encode($prduct_current_data['ProductCategory'])?>'>
+								<label class='checkbox' style='margin-left : 20px;' data-ng-repeat="(id,value) in selected_type_categories.categories">
+									<input id="ProductProductCategory{{$index}}CategoryId" type="checkbox" data-ng-if = "db_selected_type_categories.indexOf(id) != -1" checked value="{{id}}" name="data[Product][ProductCategory][{{$index}}][category_id]">
+									<input id="ProductProductCategory{{$index}}CategoryId" type="checkbox" data-ng-if = "db_selected_type_categories.indexOf(id) == -1" value="{{id}}" name="data[Product][ProductCategory][{{$index}}][category_id]">{{value}}
+								</label>
+							</div>
+							
+						</div>
+					</div>
+					
+					<div class="col-md-6">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Brands</div>
+							</div>
+							<div class="panel-body category-brand-box">
+							<?php 
+								static $i = 0;
+								foreach($productBrands as $b_id => $b_title):
+									if(array_search("{$b_id}", $prduct_current_data['ProductBrand']) === false){
+										$checked = false;
+									}else{
+										$checked = true;
+									}
+									echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductBrand.{$i}.brand_id",array('type'=>'checkbox','value'=>$b_id,'checked' => $checked, 'label'=>false,'div'=>false))." {$b_title}</label>";
+								$i++;
+								endforeach;
+							?>
+							</div>
+						</div>
+					</div>
+				</div>
+			
 			</div>
 			
 			<div class="row attr-inputs" existing-values = '<?php echo json_encode($this->request->data['ProductAttribute'],true)?>'></div>

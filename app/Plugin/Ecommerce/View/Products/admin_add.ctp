@@ -13,7 +13,7 @@
 <div class="row bar bar-third">
 	<div class="col-md-12">
 	<?php 
-	echo $this->Form->create('Product',array('class'=>'form','type'=>'file')); 
+		echo $this->Form->create('Product',array('class'=>'form','type'=>'file')); 
 	?>
 	
 	<div class="row">
@@ -44,41 +44,40 @@
 				$option_values = json_encode($productTypes);
 				echo $this->Form->input('type_id',array('type'=>'select', 'options'=>$productTypes, 'type_categories' => json_encode($productCategories), 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','div'=>array('class'=>'form-group')));
 			?>
-			{{selected_type_categories}}
-			</div>
-			<div class = "row">
-				<div class="col-md-6">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">Categories </div>
-						</div>
-						<div class="panel-body category-brand-box">
-						
-							<label class='checkbox' style='margin-left : 20px;' data-ng-repeat="cat in selected_type_categories">
-								<input id="ProductProductCategory0CategoryId" type="checkbox" value="542817d1-5490-4af4-a8cc-04d1cdd1d5ac" name="data[Product][ProductCategory][0][category_id]">
-							</label>
-						</div>
-					</div>
-				</div>
 				
-				<div class="col-md-6">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">Brands</div>
+			
+				<div class = "row">
+					<div class="col-md-6">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Categories </div>
+							</div>
+							<div class="panel-body category-brand-box">
+								<label class='checkbox' style='margin-left : 20px;' data-ng-repeat="(id,value) in selected_type_categories.categories">
+									<input id="ProductProductCategory{{$index}}CategoryId" type="checkbox" value="{{id}}" name="data[Product][ProductCategory][{{$index}}][category_id]">{{value}}
+								</label>
+							</div>
 						</div>
-						<div class="panel-body category-brand-box">
-						<?php 
-							static $i = 0;
-							foreach($productBrands as $b_id => $b_title):
-								echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductBrand.{$i}.brand_id",array('type'=>'checkbox','value'=>$b_id,'label'=>false,'div'=>false))." {$b_title}</label>";
-							$i++;
-							endforeach;
-						?>
+					</div>
+					
+					<div class="col-md-6">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Brands</div>
+							</div>
+							<div class="panel-body category-brand-box">
+							<?php 
+								static $i = 0;
+								foreach($productBrands as $b_id => $b_title):
+									echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.ProductBrand.{$i}.brand_id",array('type'=>'checkbox','value'=>$b_id,'label'=>false,'div'=>false))." {$b_title}</label>";
+								$i++;
+								endforeach;
+							?>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-	
 			<div class="row attr-inputs"></div>
 			
 			<!-- Upload Images -->

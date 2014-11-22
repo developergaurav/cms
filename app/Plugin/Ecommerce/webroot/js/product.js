@@ -5,7 +5,8 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 	$scope.AttrData = JSON.parse($('.AttrDataHolder').attr('attribute_array'));
 	$scope.option_list =JSON.parse($('.product_type').attr('option_values'));
 	$scope.type_categories = JSON.parse($('.product_type').attr('type_categories'));
-	
+	$scope.db_selected_type_categories = $('.current_categories').attr('data-current-selected-categories');
+
 	//check is edit
 	 var is_edit_form = function(){
 		if($('.attr-inputs').attr('existing-values') != undefined){
@@ -13,7 +14,7 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 		}else{
 			return false;
 		}
-	}
+	};
 	
 	//set default product type 
 	$scope.defaultSelectedType = function(){
@@ -29,12 +30,12 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 		}else{
 			$scope.productType = $('.product_type').attr('selected_value');
 		}
-	}
+	};
 	
 	//check pruduct type
 	$scope.checkProductType = function(){
 		$scope.productType = $('.product_type').val();
-	}
+	};
 	
 	//watch productType and filter attributes and values
 	$scope.selected_attr = new Object();
@@ -47,33 +48,27 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 					$scope.selected_attr = val.Attribute;
 				}
 			});
-			
 			//process category by selected type
 			$scope.selected_type_categories = $scope.type_categories[$scope.productType];
-		
-			
 		}else{
 			$scope.defaultSelectedType();
 		}
 	});
 
 	//process form according to filtered attribute and attribute value 
-	
 	$scope.$watch('selected_attr',function(){
 		var attr_html = '';
 		if(is_edit_form() == false){
 			//for product add
 			$.each($scope.selected_attr,function(ind,val){
 				attr_html += '<div class="col-md-4">';
-					attr_html += '<div class="attribute-id-holder"><input type="checkbox" value="'+val.id+'" checked name=data[Product][ProductAttribute]['+ind+'][attribute_id]> '+val.title +'</div>';
+					attr_html += '<div class="attribute-id-holder"> <input type="checkbox" value="'+val.id+'" checked name=data[Product][ProductAttribute]['+ind+'][attribute_id]> '+val.title +'</div>';
 					$.each(val.AttributeValue,function(i,v){
-						
 						attr_html+= '<div><span class="pull-left"> <input type="checkbox" value="'+v.id+'" checked name=data[Product][ProductAttribute]['+ind+'][ProductAttributeValue]['+i+'][attribute_value_id] > '+v.value+'</span>';
 						if(v.has_price == 'yes'){
-							attr_html+='<span class="pull-right"><input name=data[Product][ProductAttribute]['+ind+'][ProductAttributeValue]['+i+'][price] placeholder="Price"></span>';
+							attr_html+='<span class="pull-right"> <input name=data[Product][ProductAttribute]['+ind+'][ProductAttributeValue]['+i+'][price] placeholder="Price"></span>';
 						}
 						attr_html+= '<div class="clearfix"></div></div>';
-						
 					});
 				attr_html += '</div>';
 			});
@@ -90,16 +85,12 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 						attribute_checked  = 'checked';
 						existing_attribute_value_value = existing_value.ProductAttributeValue;
 					}
-				})
-				
+				});
 					
 				attr_html += '<div class="col-md-4">';
-					attr_html += '<div class="attribute-id-holder"><input type="checkbox" value="'+val.id+'" name=data[Product][ProductAttribute]['+ind+'][attribute_id] '+attribute_checked+' > '+val.title +'</div>';
-					
+					attr_html += '<div class="attribute-id-holder"> <input type="checkbox" value="'+val.id+'" name=data[Product][ProductAttribute]['+ind+'][attribute_id] '+attribute_checked+' > '+val.title +'</div>';
 					//attribute value section
 					$.each(val.AttributeValue,function(i,v){
-						
-						
 						var existing_attribute_value_value_check = '';
 						var price = '';
 						$.each(existing_attribute_value_value,function(existing_value_ind, existing_value_value){
@@ -107,28 +98,28 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 								existing_attribute_value_value_check  = 'checked';
 								price = 'value="'+existing_value_value.price+'"';
 							}
-						})
+						});
 						
 						attr_html+= '<div><span class="pull-left"> <input type="checkbox" '+existing_attribute_value_value_check+' value="'+v.id+'"  name=data[Product][ProductAttribute]['+ind+'][ProductAttributeValue]['+i+'][attribute_value_id] > '+v.value+'</span>';
 						if(v.has_price == 'yes'){
-							attr_html+='<span class="pull-right"><input '+price+' name=data[Product][ProductAttribute]['+ind+'][ProductAttributeValue]['+i+'][price] placeholder="Price"></span>';
+							attr_html+='<span class="pull-right"> <input '+price+' name=data[Product][ProductAttribute]['+ind+'][ProductAttributeValue]['+i+'][price] placeholder="Price"></span>';
 						}
 						attr_html+= '<div class="clearfix"></div></div>';
 					});
 				attr_html += '</div>';
 			});
 		}
-		
-		
 		//print attribute and attribute value form
 		$('.attr-inputs').empty().html(attr_html);
-		
 	});
 	
 	$scope.$watch('selected_type_categories',function(ind,val){
-		console.log(ind)
-	})
+		//console.log(ind)
+	});
 	
+	$scope.$watch('db_selected_type_categories',function(ind,val){
+		console.log($scope.db_selected_type_categories)
+	});
 }]);
 
 

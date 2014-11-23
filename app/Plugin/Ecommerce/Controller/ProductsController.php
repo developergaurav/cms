@@ -260,15 +260,11 @@ class ProductsController extends EcommerceAppController {
 			throw new NotFoundException(__('Invalid product'));
 		}
 		$this->request->allowMethod('post', 'delete');
-		
 		$deleteable_image_files = $this->Product->ProductImage->find('list',array('fields'=>array('id','extension'), 'conditions'=>array('product_id'=> $id)));
-		
 		if ($this->Product->deleteAll(array('Product.id'=>$id,true))) {
-			
 			foreach($deleteable_image_files as $id=>$ext){
 				$this->Uploader->deleteFile(WWW_ROOT."img/site/products/{$id}.{$ext}");
 			}
-			
 			$this->Session->setFlash('The product has been deleted.','default',array('class'=>'alert alert-success'));
 		} else {
 			$this->Session->setFlash('The product could not be deleted. Please, try again.','default',array('class'=>'alert alert-warning'));

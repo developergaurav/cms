@@ -246,23 +246,27 @@ class SitesController extends EcommerceAppController {
 /**
  * checkout
  */
-	public function checkout(){
+	public function order(){
 		if($this->request->is('post')){
 			$post_data =  $this->request->input('json_decode',true);
 			
 			$ready_data['ProductOrder']['client_detail'] 	= json_encode($post_data['client_details']);
 			$ready_data['ProductOrder']['order_detail'] 	= json_encode($post_data['cart']);
-			$ready_data['ProductOrder']['payment_detail'] 	= json_encode($post_data['paymentDetail']);
 			$ready_data['ProductOrder']['status'] 			= 'ordered';
+			
 			if($this->ProductOrder->save($ready_data)){
+				$order_id = $this->ProductOrder->getInsertId();
+				$icePayData['amount'] = json_encode($post_data['total_cost'])*100;
+				$icePayData['order_id'] = $order_id;
+				$payment_object = $this->Icepay->processPaymentObject($icePayData);
+				$payment_url = $this->Icepay->getPayNowUrl($payment_object,$order_id);
 				$response['status'] = true;
-				$response['message'] = 'Your Order has been done.';
+				$response['message'] = $payment_url;
 			}else{
 				$response['status'] = false;
 				$response['message'] = 'Please try again';
 			}
 			//paymentDetail
-			
 			
 		}else{
 			$response = array('message'=>'Invalid Request');

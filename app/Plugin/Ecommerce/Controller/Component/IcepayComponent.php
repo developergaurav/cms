@@ -1,5 +1,5 @@
 <?php
-App::import('Vendor', 'Ecommerce.icepay', array('file' => 'icepay/icepay_api_webservice.php'));
+App::import('Vendor', 'Ecommerce.icepay', array('file' => 'icepay/icepay_api_basic.php'));
 
 
 class IcepayComponent extends Component {
@@ -16,17 +16,21 @@ class IcepayComponent extends Component {
 		->setCurrency("EUR")
 		->setOrderID($data['order_id']);
 		
+		
+		
 		return $paymentObj;
     }
  
- 	public function getPayNowUrl ($paymentObj){
+ 	public function getPayNowUrl ($paymentObj,$order_id){
  
 		 try {
 		     // Merchant Settings
 		     $basicmode = Icepay_Basicmode::getInstance();
-		     $basicmode->setMerchantID($merchantId)     
-		             ->setSecretCode($secretCode)
-		             ->validatePayment($paymentObj);
+		     $basicmode->setMerchantID($this->merchantId)     
+		             ->setSecretCode($this->secrectCode)
+		             ->validatePayment($paymentObj)
+		     		 ->setSuccessURL("http://localhost:9000/#/shop/order/{$order_id}")
+		     		 ->setSuccessURL("http://localhost:9000/#/shop/order/{$order_id}");
 		 
 		 $payNowUrl = $basicmode->getURL();
 		 

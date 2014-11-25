@@ -1,6 +1,7 @@
 <?php
 App::uses('EcommerceAppController', 'Ecommerce.Controller');
 
+
 /**
  * Brands Controller
  *
@@ -252,13 +253,28 @@ class SitesController extends EcommerceAppController {
 			
 			$ready_data['ProductOrder']['client_detail'] 	= json_encode($post_data['client_details']);
 			$ready_data['ProductOrder']['order_detail'] 	= json_encode($post_data['cart']);
+			$ready_data['ProductOrder']['shipping_detail']	= json_encode($post_data['shipping_detail']);
 			$ready_data['ProductOrder']['status'] 			= 'ordered';
+			
+			/*$icePayData['method']	= $post_data['payment'];
+			
+			
+			$get_payment_methods = $this->Icepay->getPaymentMethods();
+			foreach($get_payment_methods as $key=>$v){
+				if($v['PaymentMethodCode'] == $icePayData['method']){
+					$issuers = $v['Issuers'];
+				}
+			}*/
+			
+		
 			
 			if($this->ProductOrder->save($ready_data)){
 				$order_id = $this->ProductOrder->getInsertId();
 				$icePayData['amount'] = json_encode($post_data['total_cost'])*100;
 				$icePayData['order_id'] = $order_id;
+				
 				$payment_object = $this->Icepay->processPaymentObject($icePayData);
+				
 				$payment_url = $this->Icepay->getPayNowUrl($payment_object,$order_id);
 				$response['status'] = true;
 				$response['message'] = $payment_url;
@@ -361,18 +377,6 @@ class SitesController extends EcommerceAppController {
 		$this->render('json_render');
 	}
 	
-	public function IcePayPaymentMethodList(){
-		$response = $this->Icepay->get_payment_methods();
-		
-		$this->set(
-			array(
-				'_serialize',
-				'data' => array('ecommerce_history'=>$response),
-				'_jsonp' => true
-			)
-		);
-		$this->render('json_render');
-	}
 	
 	public function payNow(){
 		$response = $this->Icepay->payByIcePay();
@@ -385,5 +389,26 @@ class SitesController extends EcommerceAppController {
 		);
 		$this->render('json_render');
 	}
+	
+	public function payment_methods(){
+		$payment_methods  = $this->Icepay->getPaymentMethods();
+		
+		$payment_methods_data = array();
+		foreach($payment_methods as $k=>$v){
+			$payment_methods_data[$v['PaymentMethodCode']] = $v['Description'];
+		}
+	
+		$this->set(
+			array(
+				'_serialize',
+				'data' => array('ecommerce_payment_methods'=>$payment_methods_data),
+				'_jsonp' => true
+			)
+		);
+		$this->render('json_render');
+	}
+	
+	
+	
 	
 }

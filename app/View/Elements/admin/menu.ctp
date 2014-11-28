@@ -103,7 +103,7 @@
 					<?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> Shop Manager <i class="fa fa-chevron-down pull-right"></i>','#shopManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
-			<div id="shopManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('brands','categories','products','types','attributes','attribute_values','attribute_labels')));?>">
+			<div id="shopManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('brands','categories','products','types','attributes','attribute_values','attribute_labels','stores')));?>">
 				<div class="panel-body panel-body-custom">
 					<ul class="left-bar-menu-ul">
 						<li>
@@ -116,6 +116,10 @@
 						
 						<li>
 							<?php echo $this->Html->link('<i class="fa fa-filter"></i> Categories',['controller'=>'categories','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
+						</li>
+						
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-filter"></i> Stores',['controller'=>'stores','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
 						</li>
 						
 						<li>

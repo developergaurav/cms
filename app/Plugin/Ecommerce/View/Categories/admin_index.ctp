@@ -23,6 +23,7 @@
 			<table class="table table-striped" >
 			<thead>
 			<tr class="info">
+				<th><?php echo h('Image'); ?></th>
 				<th><?php echo $this->Paginator->sort('parent_id'); ?></th>
 				<th><?php echo $this->Paginator->sort('title'); ?></th>
 				<th><?php echo $this->Paginator->sort('description'); ?></th>
@@ -35,6 +36,14 @@
 			<tbody>
 			<?php foreach ($categories as $category): ?>
 				<tr>
+					<td>
+						<?php 
+							if(file_exists(WWW_ROOT ."/img/site/product_categories/{$category['Category']['id']}.png")):
+								echo $this->Html->image("/img/site/product_categories/{$category['Category']['id']}.png",array('class'=>'img img-responsive upload-image-thumbnail'));
+							endif;
+						?>
+					</td>
+				
 					<td>
 						<?php echo $category['ParentCategory']['title']; ?>
 					</td>

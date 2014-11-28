@@ -28,7 +28,8 @@ class SitesController extends EcommerceAppController {
 		'Ecommerce.Store',
 		'Ecommerce.Type',
 		'Ecommerce.Attribute',
-		'Ecommerce.ProductOrder'
+		'Ecommerce.ProductOrder',
+		'Ecommerce.Store'
 	);
 
 	public function beforeFilter(){
@@ -408,7 +409,53 @@ class SitesController extends EcommerceAppController {
 		$this->render('json_render');
 	}
 	
+	/*
+	public function brandTree(){
+		if($this->request->is('get')){
+			$data = $this->Brand->find('all',array('conditions'=>array('status'=>'active')));
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_brands'=>$data),
+							'_jsonp' => true
+								
+					)
+			);
+		}else{
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_brands'=>'Invalid Request'),
+							'_jsonp' => true
+					)
+			);
+		}
+		$this->render('json_render');
+	}
 	
+	*/
+	
+	public function getStores(){
+		if($this->request->is('get')){
+			$data = $this->Store->find('all',array('conditions'=>array('status'=>'active'),'order' =>  array('order'=>'asc')));
+			$this->set(
+				array(
+					'_serialize',
+					'data' => array('ecommerce_stores'=>$data),
+					'_jsonp' => true
+				)
+			);
+		}else{
+			$this->set(
+				array(
+					'_serialize',
+					'data' => array('ecommerce_stores'=>'Invalid Request'),
+					'_jsonp' => true
+				)
+			);
+		}
+		$this->render('json_render');
+	}
 	
 	
 }

@@ -13,14 +13,20 @@
 <div class="row bar bar-third">
 	<div class="col-md-12">
 	<?php 
-	echo $this->Form->create('Brand',array('class'=>'form')); 
-	
+	echo $this->Form->create('Brand',array('class'=>'form','type'=>'file')); 
+		$data = $this->request->data;
 		echo $this->Form->input('id',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('description',array('type'=>'textarea','class'=>'form-control editor','div'=>array('class'=>'form-group')));
 		//echo $this->Form->input('images',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+		echo $this->Form->input('image',array('type'=>'file','required' => false, 'onchange'=>'catUploadThumb(this)','div'=>array('class'=>'form-group')));
+		
+		if(file_exists(WWW_ROOT."img/site/product_brands/{$data['Brand']['id']}.png")):
+			echo $this->Html->image("/img/site/product_brands/{$data['Brand']['id']}.png",array('class'=>'img img-reponsive upload-image-thumbnail'));
+		endif;
+		
 		echo $this->Form->input('order',array('type'=>'hidden', 'class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('status',array('options' => $status, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 
@@ -30,3 +36,25 @@
 	echo $this->Form->end(); 
 ?>	</div>
 </div>
+
+
+<script>
+function catUploadThumb(selector){
+	var file = selector.files[0];
+	if(file){
+		 var reader = new FileReader();
+		 var file_data = reader.readAsDataURL(file);
+		 reader.onload = function(evt){
+			 $('.upload-image-thumbnail').remove();
+			$('<img class="img-responsive upload-image-thumbnail" src="'+evt.target.result+'">').insertAfter(selector)
+		 }
+	}
+}
+
+</script>
+
+<style>
+	.upload-image-thumbnail{
+		margin-top : 10px;
+	}
+</style>

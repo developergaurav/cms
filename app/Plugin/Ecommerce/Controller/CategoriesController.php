@@ -14,7 +14,7 @@ class CategoriesController extends EcommerceAppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Session');
+	public $components = array('Paginator', 'Session', 'Uploader');
 
 /**
  * admin_index method
@@ -48,8 +48,16 @@ class CategoriesController extends EcommerceAppController {
  */
 	public function admin_add() {
 		if ($this->request->is('post')) {
+			
+			$data = $this->request->data;
+			
 			$this->Category->create();
-			if ($this->Category->save($this->request->data)) {
+			if ($this->Category->save($data )) {
+				$image_id = $this->Category->getInsertId();
+				if(isset($data['Category']['image']) && $data['Category']['image']['error'] == 0){
+					$this->Uploader->upload($data['Category']['image'], $image_id, 'png', 'product_categories',$fileOrImage = null, $height = '', $width = '750', $oldfile = null );
+				}
+				
 				$this->Session->setFlash('The category has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
@@ -72,7 +80,13 @@ class CategoriesController extends EcommerceAppController {
 			throw new NotFoundException(__('Invalid category'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Category->save($this->request->data)) {
+			$data = $this->request->data;
+			if(isset($data['Category']['image']) && $data['Category']['image']['error'] == 0){
+				echo $this->Uploader->upload($data['Category']['image'], $id, 'png', 'product_categories',$fileOrImage = null, $height = '', $width = '750', $oldfile = null );
+			}
+			
+			
+			if ($this->Category->save($data)) {
 				$this->Session->setFlash('The category has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {

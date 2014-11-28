@@ -22,28 +22,32 @@
 		<div class="table-responsive">
 			<table class="table table-striped" >
 			<thead>
-			<tr class="info">
-							<th><?php echo $this->Paginator->sort('id'); ?></th>
-							<th><?php echo $this->Paginator->sort('details'); ?></th>
-							<th><?php echo $this->Paginator->sort('order'); ?></th>
-							<th><?php echo $this->Paginator->sort('status'); ?></th>
-							<th class="text-right action-th"><?php echo __('Actions'); ?></th>
-			</tr>
+				<tr class="info">
+					<th><?php echo $this->Paginator->sort('title'); ?></th>
+					<th><?php echo $this->Paginator->sort('details'); ?></th>
+					<th><?php echo $this->Paginator->sort('latitude'); ?></th>
+					<th><?php echo $this->Paginator->sort('longitude'); ?></th>
+					<th><?php echo $this->Paginator->sort('order'); ?></th>
+					<th><?php echo $this->Paginator->sort('status'); ?></th>
+					<th class="text-right action-th"><?php echo __('Actions'); ?></th>
+				</tr>
 			</thead>
 			
 			<tbody>
 			<?php foreach ($stores as $store): ?>
-	<tr>
-		<td><?php echo h($store['Store']['id']); ?>&nbsp;</td>
-		<td><?php echo h($store['Store']['details']); ?>&nbsp;</td>
-		<td><?php echo h($store['Store']['order']); ?>&nbsp;</td>
-		<td><?php echo h($store['Store']['status']); ?>&nbsp;</td>
-		<td class="text-right action">
-			<?php echo $this->Html->link('<i class=\'glyphicon glyphicon-edit\'></i> Edit', array('action' => 'edit', $store['Store']['id'],'admin'=>true),array('escape'=>false,'class'=>'btn btn-warning')); ?>
-			<?php echo $this->Form->postLink('<i class=\'glyphicon glyphicon-remove-circle\'></i> Delete', array('action' => 'delete', $store['Store']['id'],'admin'=>true), array('escape'=>false,'class'=>'btn btn-danger'), __('Are you sure you want to delete?')); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
+				<tr>
+					<td><?php echo h($store['Store']['title']); ?></td>
+					<td><?php echo h($store['Store']['details']); ?></td>
+					<td><?php echo h($store['Store']['latitude']); ?></td>
+					<td><?php echo h($store['Store']['longitude']); ?></td>
+					<td><?php echo h($store['Store']['order']); ?></td>
+					<td><?php echo h($store['Store']['status']); ?></td>
+					<td class="text-right action">
+						<?php echo $this->Html->link('<i class=\'glyphicon glyphicon-edit\'></i> Edit', array('action' => 'edit', $store['Store']['id'],'admin'=>true),array('escape'=>false,'class'=>'btn btn-warning')); ?>
+						<?php echo $this->Form->postLink('<i class=\'glyphicon glyphicon-remove-circle\'></i> Delete', array('action' => 'delete', $store['Store']['id'],'admin'=>true), array('escape'=>false,'class'=>'btn btn-danger'), __('Are you sure you want to delete?')); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
 			</tbody>
 			</table>
 		</div>

@@ -14,7 +14,7 @@ class BrandsController extends EcommerceAppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Session','Ecommerce.EcommerceUploader');
+	public $components = array('Paginator', 'Session','Uploader');
 	
 	public function beforeFilter(){
 		parent::beforeFilter();
@@ -60,8 +60,11 @@ class BrandsController extends EcommerceAppController {
 			$this->Brand->create();
 			if ($this->Brand->save($data)) {
 				$image_id = $this->Brand->getInsertId();
-				$ext = $this->Uploader->getFileExtension($image);
-				//$this->Uploader->upload($image, $image_id, $ext, $category,$fileOrImage = null, $height = '', $width = '', $oldfile = null );
+				
+				$data = $this->request->data;
+				if(isset($data['Brand']['image']) && $data['Brand']['image']['error'] == 0){
+					$this->Uploader->upload($data['Brand']['image'], $image_id, 'png', 'product_brands',$fileOrImage = null, $height = '300', $width = '500', $oldfile = null );
+				}
 				$this->Session->setFlash('The brand has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
@@ -82,7 +85,13 @@ class BrandsController extends EcommerceAppController {
 			throw new NotFoundException(__('Invalid brand'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Brand->save($this->request->data)) {
+			
+			$data = $this->request->data;
+			if(isset($data['Brand']['image']) && $data['Brand']['image']['error'] == 0){
+				$this->Uploader->upload($data['Brand']['image'], $id, 'png', 'product_brands',$fileOrImage = null, $height = '300', $width = '500', $oldfile = null );
+			}
+				
+			if ($this->Brand->save($data)) {
 				$this->Session->setFlash('The brand has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {

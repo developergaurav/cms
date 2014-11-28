@@ -23,6 +23,7 @@
 			<table class="table table-striped" >
 			<thead>
 			<tr class="info">
+				<th><?php echo h('Image'); ?></th>
 				<th><?php echo $this->Paginator->sort('title'); ?></th>
 				<th><?php echo $this->Paginator->sort('description'); ?></th>
 				<th><?php echo $this->Paginator->sort('order'); ?></th>
@@ -34,6 +35,13 @@
 			<tbody>
 			<?php foreach ($brands as $brand): ?>
 				<tr>
+					<td>
+						<?php 
+							if(file_exists(WWW_ROOT ."/img/site/product_brands/{$brand['Brand']['id']}.png")):
+									echo $this->Html->image("/img/site/product_brands/{$brand['Brand']['id']}.png",array('class'=>'img img-responsive upload-image-thumbnail'));
+							endif;
+						?>
+					</td>
 					<td><?php echo h($brand['Brand']['title']); ?></td>
 					<td>
 						<?php echo String::truncate("{$brand['Brand']['description']}",100,array('ellipsis' => '...','exact' => false,'html' => false));?>

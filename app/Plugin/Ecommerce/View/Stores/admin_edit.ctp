@@ -16,9 +16,12 @@
 	echo $this->Form->create('Store',array('class'=>'form')); 
 	
 		echo $this->Form->input('id',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+		echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('details',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-		echo $this->Form->input('order',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-		echo $this->Form->input('status',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+		echo $this->Form->input('latitude',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+		echo $this->Form->input('longitude',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+		//echo $this->Form->input('order',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+		echo $this->Form->input('status',array('options' => $status, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 
 		echo $this->Form->button('Reset',array('type'=>'reset', 'class'=>'btn btn-warning','label'=>false,'div'=>false));
 		echo $this->Form->button('Submit',array('type'=>'submit','class'=>'btn btn-success btn-left-margin','label'=>false,'div'=>false));

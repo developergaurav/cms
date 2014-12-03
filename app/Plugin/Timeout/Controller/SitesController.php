@@ -21,13 +21,16 @@ class SitesController extends TimeoutAppController {
 	public function beforeFilter(){
 		parent::beforeFilter();
 		$this->response->header('Access-Control-Allow-Origin', '*');
+		//$this->response->header('Access-Control-Allow-Origin', '*');
 		
 		$this->Auth->allow(array(
 				'client_registration',
 				'client_login',
 				'client_profile',
 				'check_crrrent_password',
-				'update_password'
+				'update_password',
+				'lookbook',
+				'homeblock'
 			)
 		);
 		
@@ -93,14 +96,13 @@ class SitesController extends TimeoutAppController {
 		$response = array();
 		if($this->request->is('post')){
 			//catch post ata
-			$data =  $this->request->input('json_decode',true);
+			$data =  $this->request->data;//input('json_decode',true);
 			
 			//process data
 			$login_data = array();
 			foreach($data as $key=>$value){
 				$login_data[$value['name']] =$value['value'];
 			}
-			
 			//check user auth credential
 			$is_valid_user = $this->Client->processLogin($login_data['username'],$login_data['password']);
 			
@@ -260,6 +262,34 @@ class SitesController extends TimeoutAppController {
 				)
 		);
 		
+		$this->render('json_render');
+	}
+	
+	//look book
+	public function lookbook(){
+		$response = ClassRegistry::init('Timeout.Lookbook')->find('all',array('order'=>array('order'=>'asc')));
+		$this->set(
+			array(
+				'_serialize',
+				'data' => array('lookbook'=>$response),
+				'_jsonp' => true
+			)
+		);
+	
+		$this->render('json_render');
+	}
+	
+	//look book
+	public function homeblock(){
+		$response = ClassRegistry::init('Timeout.HomeBlock')->find('all');//,array('order'=>array('order'=>'asc')));
+		$this->set(
+				array(
+					'_serialize',
+					'data' => array('homeblock'=>$response),
+					'_jsonp' => true
+				)
+		);
+	
 		$this->render('json_render');
 	}
 

@@ -50,12 +50,14 @@ class CategoriesController extends EcommerceAppController {
 		if ($this->request->is('post')) {
 			
 			$data = $this->request->data;
-			
+			if(isset($data['Category']['image']) && $data['Category']['image']['error'] == 0){
+				$data['Category']['image_extension'] =  $this->Uploader->getFileExtension($data['Category']['image']);
+			}
 			$this->Category->create();
 			if ($this->Category->save($data )) {
 				$image_id = $this->Category->getInsertId();
 				if(isset($data['Category']['image']) && $data['Category']['image']['error'] == 0){
-					$this->Uploader->upload($data['Category']['image'], $image_id, 'png', 'product_categories',$fileOrImage = null, $height = '', $width = '750', $oldfile = null );
+					$this->Uploader->upload($data['Category']['image'], $image_id, $data['Category']['image_extension'], 'product_categories',$fileOrImage = null, $height = '300', $width = '900', $oldfile = null );
 				}
 				
 				$this->Session->setFlash('The category has been saved.','default',array('class'=>'alert alert-success'));
@@ -82,9 +84,12 @@ class CategoriesController extends EcommerceAppController {
 		if ($this->request->is(array('post', 'put'))) {
 			$data = $this->request->data;
 			if(isset($data['Category']['image']) && $data['Category']['image']['error'] == 0){
-				echo $this->Uploader->upload($data['Category']['image'], $id, 'png', 'product_categories',$fileOrImage = null, $height = '', $width = '750', $oldfile = null );
+				$data['Category']['image_extension'] = $this->Uploader->getFileExtension($data['Category']['image']);
+				
+				$this->Uploader->upload($data['Category']['image'], $id, $data['Category']['image_extension'], 'product_categories',$fileOrImage = null, $height = '300', $width = '900', $oldfile = null );
+			}else{
+				$data['Category']['image_extension'] = '';
 			}
-			
 			
 			if ($this->Category->save($data)) {
 				$this->Session->setFlash('The category has been saved.','default',array('class'=>'alert alert-success'));

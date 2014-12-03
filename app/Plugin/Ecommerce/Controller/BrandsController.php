@@ -54,6 +54,9 @@ class BrandsController extends EcommerceAppController {
 		//echo 
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
+			if(isset($data['Brand']['image']) && $data['Brand']['image']['error'] == 0){
+				$data['Brand']['image_extension'] = $this->Uploader->getFileExtension($data['Brand']['image']);
+			}
 			$image = $data['Brand']['images'];
 			unset($data['Brand']['images']);
 			
@@ -63,7 +66,7 @@ class BrandsController extends EcommerceAppController {
 				
 				$data = $this->request->data;
 				if(isset($data['Brand']['image']) && $data['Brand']['image']['error'] == 0){
-					$this->Uploader->upload($data['Brand']['image'], $image_id, 'png', 'product_brands',$fileOrImage = null, $height = '300', $width = '500', $oldfile = null );
+					$this->Uploader->upload($data['Brand']['image'], $image_id, $data['Brand']['image_extension'], 'product_brands',$fileOrImage = null, $height = '300', $width = '500', $oldfile = null );
 				}
 				$this->Session->setFlash('The brand has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
@@ -87,8 +90,11 @@ class BrandsController extends EcommerceAppController {
 		if ($this->request->is(array('post', 'put'))) {
 			
 			$data = $this->request->data;
+			
+			
 			if(isset($data['Brand']['image']) && $data['Brand']['image']['error'] == 0){
-				$this->Uploader->upload($data['Brand']['image'], $id, 'png', 'product_brands',$fileOrImage = null, $height = '300', $width = '500', $oldfile = null );
+				$data['Brand']['image_extension'] = $this->Uploader->getFileExtension($data['Brand']['image']);
+				$this->Uploader->upload($data['Brand']['image'], $id, $data['Brand']['image_extension'], 'product_brands',$fileOrImage = null, $height = '300', $width = '500', $oldfile = null );
 			}
 				
 			if ($this->Brand->save($data)) {

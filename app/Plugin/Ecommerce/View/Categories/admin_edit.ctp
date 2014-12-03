@@ -23,8 +23,8 @@
 		echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('description',array('type'=>'textarea','class'=>'form-control editor','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('image',array('type'=>'file','required' => false, 'onchange'=>'catUploadThumb(this)','div'=>array('class'=>'form-group')));
-		if(file_exists(WWW_ROOT ."/img/site/product_categories/{$data['Category']['id']}.png")):
-			echo $this->Html->image("/img/site/product_categories/{$data['Category']['id']}.png",array('class'=>'img img-responsive upload-image-thumbnail'));
+		if(file_exists(WWW_ROOT ."/img/site/product_categories/{$data['Category']['id']}.{$data['Category']['image_extension']}")):
+			echo $this->Html->image("/img/site/product_categories/{$data['Category']['id']}.{$data['Category']['image_extension']}",array('class'=>'img img-responsive upload-image-thumbnail'));
 		endif;
 		echo $this->Form->input('status',array('options'=>$status, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 		

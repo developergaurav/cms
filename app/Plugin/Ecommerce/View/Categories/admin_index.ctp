@@ -38,8 +38,8 @@
 				<tr>
 					<td>
 						<?php 
-							if(file_exists(WWW_ROOT ."/img/site/product_categories/{$category['Category']['id']}.png")):
-								echo $this->Html->image("/img/site/product_categories/{$category['Category']['id']}.png",array('class'=>'img img-responsive upload-image-thumbnail'));
+							if(file_exists(WWW_ROOT ."/img/site/product_categories/{$category['Category']['id']}.{$category['Category']['image_extension']}")):
+								echo $this->Html->image("/img/site/product_categories/{$category['Category']['id']}.{$category['Category']['image_extension']}",array('class'=>'img img-responsive upload-image-thumbnail'));
 							endif;
 						?>
 					</td>

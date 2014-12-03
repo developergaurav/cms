@@ -24,6 +24,7 @@
 			<thead>
 			<tr class="info">
 				<th><?php echo h('Images'); ?></th>
+				<th><?php echo $this->Paginator->sort('product_code'); ?></th>
 				<th><?php echo $this->Paginator->sort('title'); ?></th>
 				<th><?php echo $this->Paginator->sort('description'); ?></th>
 				<th><?php echo $this->Paginator->sort('price'); ?></th>
@@ -37,6 +38,7 @@
 			<?php foreach ($products as $product):?>
 				<tr>
 					<td><?php echo $this->Html->image("site/products/{$product['ProductImage'][0]['id']}.{$product['ProductImage'][0]['extension']}",array('class'=>'img-responsive upload-image-thumbnail'));?></td>
+					<td><?php echo h($product['Product']['product_code']); ?></td>
 					<td><?php echo h($product['Product']['title']); ?></td>
 					<td>
 						<?php echo String::truncate("{$product['Product']['description']}",100,array('ellipsis' => '...','exact' => false,'html' => false));?>

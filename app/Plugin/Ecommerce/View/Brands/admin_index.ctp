@@ -37,8 +37,8 @@
 				<tr>
 					<td>
 						<?php 
-							if(file_exists(WWW_ROOT ."/img/site/product_brands/{$brand['Brand']['id']}.png")):
-									echo $this->Html->image("/img/site/product_brands/{$brand['Brand']['id']}.png",array('class'=>'img img-responsive upload-image-thumbnail'));
+							if(file_exists(WWW_ROOT ."/img/site/product_brands/{$brand['Brand']['id']}.{$brand['Brand']['image_extension']}")):
+									echo $this->Html->image("/img/site/product_brands/{$brand['Brand']['id']}.{$brand['Brand']['image_extension']}",array('class'=>'img img-responsive upload-image-thumbnail'));
 							endif;
 						?>
 					</td>

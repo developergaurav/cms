@@ -66,7 +66,8 @@ class Brand extends EcommerceAppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'images' => array(
+		/*
+		'image_extension' => array(
 			
 			'image_type' => array(
 					'rule' => array('extension', array('jpeg', 'png', 'jpg')),
@@ -85,7 +86,7 @@ class Brand extends EcommerceAppModel {
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			)
 			
-		),
+		),*/
 		'order' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),

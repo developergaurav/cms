@@ -29,7 +29,8 @@ class SitesController extends EcommerceAppController {
 		'Ecommerce.Type',
 		'Ecommerce.Attribute',
 		'Ecommerce.ProductOrder',
-		'Ecommerce.Store'
+		'Ecommerce.Store',
+		'Ecommerce.TypeCategory'
 	);
 
 	public function beforeFilter(){
@@ -67,6 +68,43 @@ class SitesController extends EcommerceAppController {
 		}
 		$this->render('json_render');
 	}
+	
+	public function brand_list_image(){
+		if($this->request->is('get')){
+			$data = $this->Brand->find(
+				'all',
+				array(
+					'conditions'=>array(
+						'status'=>'active',
+						'image_extension !=' => ''
+					),
+					'fields' => array(
+						'id','image_extension','title'
+					),
+					'recursive' => -1
+				)
+			);
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_brands'=>$data),
+							'_jsonp' => true
+								
+					)
+			);
+		}else{
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_brands'=>'Invalid Request'),
+							'_jsonp' => true
+					)
+			);
+		}
+		$this->render('json_render');
+	}
+	
+	
 
 
 	/*
@@ -154,6 +192,15 @@ class SitesController extends EcommerceAppController {
 				
 			)
 		);
+		
+		//sort out by cat
+		foreach($data as $key=>$val){
+			if(sizeof($val['ProductCategory'])<= 0){
+				unset($data[$key]);
+			}
+		}
+		
+		
 		$this->set(
 			array(
 				'_serialize',
@@ -188,6 +235,12 @@ class SitesController extends EcommerceAppController {
 			)
 		);
 	
+		//sort out by cat
+		foreach($data as $key=>$val){
+			if(sizeof($val['ProductBrand'])<= 0){
+				unset($data[$key]);
+			}
+		}
 		$this->set(
 			array(
 				'_serialize',
@@ -250,24 +303,13 @@ class SitesController extends EcommerceAppController {
  */
 	public function order(){
 		if($this->request->is('post')){
-			$post_data =  $this->request->input('json_decode',true);
+			$post_data =  $this->request->data;
 			
 			$ready_data['ProductOrder']['client_detail'] 	= json_encode($post_data['client_details']);
 			$ready_data['ProductOrder']['order_detail'] 	= json_encode($post_data['cart']);
 			$ready_data['ProductOrder']['shipping_detail']	= json_encode($post_data['shipping_detail']);
 			$ready_data['ProductOrder']['status'] 			= 'ordered';
 			
-			/*$icePayData['method']	= $post_data['payment'];
-			
-			
-			$get_payment_methods = $this->Icepay->getPaymentMethods();
-			foreach($get_payment_methods as $key=>$v){
-				if($v['PaymentMethodCode'] == $icePayData['method']){
-					$issuers = $v['Issuers'];
-				}
-			}*/
-			
-		
 			
 			if($this->ProductOrder->save($ready_data)){
 				$order_id = $this->ProductOrder->getInsertId();
@@ -454,6 +496,141 @@ class SitesController extends EcommerceAppController {
 				)
 			);
 		}
+		$this->render('json_render');
+	}
+	
+	public function getAttrByCatId(){
+		if($this->request->is('post')){
+			$postData = $this->request->data;
+			$typeId = $this->TypeCategory->find('first',
+				array(
+					'conditions'=>array(
+						'category_id'=>$postData['catId']
+						),
+					'fields' => array('type_id'),
+					'recursive' => -1
+					)
+				);
+			//get all attributes by type
+			if(isset($typeId['TypeCategory']['type_id'])){
+				$attList = $this->Attribute->find(
+					'all',
+					array(
+						'contain' => array(
+							'AttributeValue' => array(
+								'fields' => array(
+									'value',
+									'id'
+								)		
+							)
+						),
+						'conditions' => array(
+							'Attribute.type_id' =>	$typeId['TypeCategory']['type_id']	
+						),
+						'fields' => array('title')
+					)	
+				);
+			}else{
+				$attList = '';
+			}
+			
+			$response['status'] = true;
+			$response['message'] = $attList;
+		}else{
+			$response['status'] = false;
+			$response['message'] = 'Invalid request type.';
+		}
+		
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('attributesForFilter'=>$response),
+						'_jsonp' => true
+				)
+		);
+		$this->render('json_render');
+	}
+	
+	public function getProductsByAttrFilter(){
+		
+		$postData = $this->request->data;
+		$request_attr_id = '';
+		$request_attr_val_id = ''; 
+		//attr filtes
+		foreach(($postData['filterRulesQuery']) as $key=>$value){
+			$request_attr_id .= "ProductAttribute.attribute_id = '{$key}' OR ";
+			
+			foreach($value as $k=>$v){
+				
+				$request_attr_val_id .= "ProductAttributeValue.attribute_value_id = '{$v}' OR ";
+			}
+		}
+		
+		
+		
+		
+		$data = $this->Product->find(
+				'all',
+				array(
+						'contain' => array(
+							//'ProductBrand',
+							'ProductCategory'=>array(
+								'conditions' => array(
+									'ProductCategory.category_id' => $postData['catId']
+								)	
+							),
+							'ProductImage',
+							'ProductAttribute'=> array(
+								'conditions' => array(
+										substr($request_attr_id,0,-4)
+								),
+								'ProductAttributeValue' => array(
+									'conditions' => array(
+										substr($request_attr_val_id,0,-4)
+									)
+								)
+							)
+						),
+						'conditions' => array('status' => 'active'),
+						'order'		 => array('created'=> 'asc'),
+						'limit'		 => 20
+				)
+		);
+		
+		//filter
+		foreach($data as $key=>$value){
+			if(sizeOf($value['ProductAttribute']) <= 0){
+				unset($data[$key]);
+			}else{
+				$attrValValStatus = 0;
+				foreach($value['ProductAttribute'] as $attr_k=>$attr_v){
+					if(sizeof($attr_v['ProductAttributeValue']) > 0){
+						$attrValValStatus++;
+					}
+				}
+				
+				if($attrValValStatus == 0){
+					unset($data[$key]);
+				}
+			}
+			
+			if(isset($data[$key])){
+				unset($data[$key]['ProductAttribute']);
+			}
+		}
+		
+		
+		
+		
+		
+		
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('ecommerce_product_list'=>$data),
+						'_jsonp' => true
+				)
+		);
 		$this->render('json_render');
 	}
 	

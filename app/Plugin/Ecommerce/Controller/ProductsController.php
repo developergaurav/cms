@@ -104,7 +104,6 @@ class ProductsController extends EcommerceAppController {
 					);
 				$i = 0;
 				foreach($image_names as $image_name=>$img_extension){
-					echo $i;
 					$this->Uploader->upload($temp_images[$i], $image_name, $img_extension, 'products',$fileOrImage = null, $height = '', $width = '600', $oldfile = null );
 					$i++;
 				}

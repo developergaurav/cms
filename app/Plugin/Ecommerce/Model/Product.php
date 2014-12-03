@@ -30,6 +30,16 @@ class Product extends EcommerceAppModel {
  * @var array
  */
 	public $validate = array(
+		'product_code' => array(
+					'notEmpty' => array(
+							'rule' => array('notEmpty'),
+							//'message' => 'Your custom message here',
+							//'allowEmpty' => false,
+							//'required' => false,
+							//'last' => false, // Stop validation after this rule
+							//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					),
+			),
 		'title' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),

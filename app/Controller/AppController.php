@@ -60,6 +60,10 @@ class AppController extends Controller {
 			[
 			'controller'	=> 'site_settings',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'home_blocks',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
 		],
 		
@@ -103,6 +107,10 @@ class AppController extends Controller {
 			],
 			[
 			'controller'	=> 'product_orders',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'lookbooks',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
 		],

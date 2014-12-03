@@ -23,8 +23,8 @@
 		//echo $this->Form->input('images',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('image',array('type'=>'file','required' => false, 'onchange'=>'catUploadThumb(this)','div'=>array('class'=>'form-group')));
 		
-		if(file_exists(WWW_ROOT."img/site/product_brands/{$data['Brand']['id']}.png")):
-			echo $this->Html->image("/img/site/product_brands/{$data['Brand']['id']}.png",array('class'=>'img img-reponsive upload-image-thumbnail'));
+		if(file_exists(WWW_ROOT."img/site/product_brands/{$data['Brand']['id']}.{$data['Brand']['image_extension']}")):
+			echo $this->Html->image("/img/site/product_brands/{$data['Brand']['id']}.{$data['Brand']['image_extension']}",array('class'=>'img img-reponsive upload-image-thumbnail'));
 		endif;
 		
 		echo $this->Form->input('order',array('type'=>'hidden', 'class'=>'form-control','div'=>array('class'=>'form-group')));

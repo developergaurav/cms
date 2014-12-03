@@ -7,7 +7,7 @@
 
 
 	//cms+blog+ecommerceCopyOfBrandsController.php
-	Router::mapResources(array("Sites",'Blog.Sites','Ecommerce.Sites','Timeout.Sites'));
+	//Router::mapResources(array("Sites",'Blog.Sites','Ecommerce.Sites','Timeout.Sites'));
 	
 	Router::parseExtensions('json');
 	

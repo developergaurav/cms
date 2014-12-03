@@ -20,6 +20,7 @@ class Attribute extends EcommerceAppModel {
  *
  * @var string
  */
+	public $actsAs = array('Containable');
 	public $displayField = 'title';
 
 /**

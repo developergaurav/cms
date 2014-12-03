@@ -20,7 +20,7 @@
 		echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('description',array('type'=>'textarea','class'=>'form-control editor','div'=>array('class'=>'form-group')));
-		echo $this->Form->input('image',array('type'=>'file','required' => true, 'onchange'=>'catUploadThumb(this)','div'=>array('class'=>'form-group')));
+		echo $this->Form->input('image',array('type'=>'file','onchange'=>'catUploadThumb(this)','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('status',array('options'=>$status, 'class'=>'form-control','div'=>array('class'=>'form-group')));
 
 		echo $this->Form->button('Reset',array('type'=>'reset', 'class'=>'btn btn-warning','label'=>false,'div'=>false));

@@ -19,6 +19,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<?php
+				echo $this->Form->input('product_code',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 				echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));

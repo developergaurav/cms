@@ -15,6 +15,7 @@ class TypesController extends EcommerceAppController {
  * @var array
  */
 	public $components = array('Paginator', 'Session');
+	public $helper = array('UyTree');
 
 /**
  * admin_index method
@@ -60,11 +61,7 @@ class TypesController extends EcommerceAppController {
  * @return void
  */
 	public function admin_add() {
-		
-	
-		
 		if ($this->request->is('post')) {
-			
 			$data = $this->request->data;
 			
 			//remove uncheck categories			
@@ -83,7 +80,10 @@ class TypesController extends EcommerceAppController {
 				$this->Session->setFlash('The type could not be saved. Please, try again.','default',array('class'=>'alert alert-warnging'));
 			}
 		}
+		
+		$this->set('catNode',$this->getCategotriesWithNode());
 		$this->set('productCategories', $this->getProductCategories());
+		$this->set('category_has_types',$this->getCategoryHasType());
 		
 	}
 
@@ -99,8 +99,9 @@ class TypesController extends EcommerceAppController {
 			throw new NotFoundException(__('Invalid type'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			$data = $this->request->data;
 			
-			if ($this->Type->save($this->request->data)) {
+			if ($this->Type->save($data)) {
 				$this->Session->setFlash('The type has been saved.','default',array('class'=>'alert alert-success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
@@ -110,8 +111,11 @@ class TypesController extends EcommerceAppController {
 			$options = array('recursive'=>2, 'conditions' => array('Type.' . $this->Type->primaryKey => $id));
 			$this->request->data = $this->Type->find('first', $options);
 		}
-		
+	
+		$this->set('currentCategories',$this->currnentCategoriesByTypeId($id));
+		$this->set('catNode',$this->getCategotriesWithNode());
 		$this->set('productCategories', $this->getProductCategories());
+		$this->set('category_has_types',$this->getCategoryHasType());
 	}
 
 /**
@@ -141,9 +145,6 @@ class TypesController extends EcommerceAppController {
 		
 		if($this->request->is('post')){
 			$data =  $this->request->data;
-			
-			
-			//pr($data);die();
 			$this->Type->create();
 			if($this->Type->saveAssociated($data,array('deep' => true))){
 				
@@ -161,10 +162,8 @@ class TypesController extends EcommerceAppController {
 		$this->autoRender = false;
 	
 		if($this->request->is('post')){
-			
 			//post
 			$data =  $this->request->data;
-			
 			
 			$p_attr = array();
 			$p_attr_values =  array();
@@ -182,7 +181,7 @@ class TypesController extends EcommerceAppController {
 			}
 			
 			//get current data
-			$cur_data = $this->Type->find('all',array(
+			$cur_data = $this->Type->find('first',array(
 				 'contain'=>array(
 			 			'Attribute'=>array(
 		 					'AttributeValue' => array('fields' => array('id'))
@@ -192,14 +191,20 @@ class TypesController extends EcommerceAppController {
 						
 				)
 			);
+			
+		
+			//current attr and value
 			$c_attr = array();
 			$c_attr_values =  array();
-			foreach($cur_data[0]['Attribute'] as $c_attr_key => $c_attr_name){
+			foreach($cur_data['Attribute'] as $c_attr_key => $c_attr_name){
 				$c_attr[] = $c_attr_name['id'];
 				foreach($c_attr_name['AttributeValue'] as $i=>$j){
 					$c_attr_values[] = $j['id'];
 				}
 			}
+			//current type_category
+			
+			//$deleteableTypeCategory = array();
 			
 			$deleteAbleAttributes = array_diff($c_attr, $p_attr);
 			$deleteAbleAttributeValues = array_diff($c_attr_values, $p_attr_values);
@@ -211,13 +216,15 @@ class TypesController extends EcommerceAppController {
 				$attributeClass->query("DELETE FROM attributes WHERE id = '{$value}'");
 			}
 			
+			//delete attribute values
 			$attributeValueClass = ClassRegistry::init('AttributeValue');
 			foreach($deleteAbleAttributeValues as $key => $value){
 				$attributeValueClass->query("DELETE FROM attribute_values WHERE id = '{$value}'");
 			}
 			
+			//delete all categories
+			$typeCategory = ClassRegistry::init('Ecommerce.TypeCategory')->deleteAll(array('TypeCategory.type_id' => $data['Type']['id']));
 			
-			$this->Type->id = $data['Type']['id'];
 			if($this->Type->saveAssociated($data,array('deep' => true))){
 				$this->Session->setFlash('This configuration is saved.','default',array('class'=>'alert alert-success'));
 				return 'success';
@@ -227,4 +234,43 @@ class TypesController extends EcommerceAppController {
 			}
 		}
 	}
+	
+	
+	private function getCategoryHasType(){
+		$data = $this->Type->TypeCategory->find(
+			'list',
+			array(
+				'fields' => array('id', 'TypeCategory.category_id'),
+				'group' => array('category_id')
+			)		
+		);
+		return array_flip($data);
+	}
+	
+	private function getCategotriesWithNode(){
+		$data =ClassRegistry::init('Ecommerce.Category')->find(
+				'threaded',
+				array(
+						'contain' => array(),
+						'fields' => array('id','parent_id', 'title'),
+						
+				)
+		);
+		
+		return $data;
+	}
+	
+	private function currnentCategoriesByTypeId($id){
+		$data =  $this->Type->TypeCategory->find(
+			'list',
+			array(
+				'fields' => array('category_id','type_id'),
+				'conditions' => array('type_id' => $id)
+			)	
+		);
+		
+		return  $data;
+	}
+	
+	
 }

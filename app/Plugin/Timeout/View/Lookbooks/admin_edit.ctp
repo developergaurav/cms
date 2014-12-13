@@ -21,10 +21,10 @@
 		echo $this->Form->input('caption',array('class'=>'form-control','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('details',array('type'=>'textarea', 'class'=>'form-control editor','div'=>array('class'=>'form-group')));
 		echo $this->Form->input('url',array('class'=>'form-control','required'=>false ,'div'=>array('class'=>'form-group')));
-		echo $this->Form->input('image',array('type'=>'file','onchange'=>'catUploadThumb(this)',  'div'=>array('class'=>'form-group'),'required'=>true));
+		echo $this->Form->input('image',array('type'=>'file','onchange'=>'catUploadThumb(this)',  'div'=>array('class'=>'form-group')));
 		 
-		if(file_exists(WWW_ROOT."/img/site/lookbooks/{$data['Lookbook']['id']}.{$data['Lookbook']['image_extenstion']}")):
-			echo $this->Html->image("/img/site/lookbooks/{$data['Lookbook']['id']}.{$data['Lookbook']['image_extenstion']}",array('class'=>'img img-responsive upload-image-thumbnail'))."<br>";
+		if(file_exists(WWW_ROOT."/img/site/lookbooks/{$data['Lookbook']['id']}.{$data['Lookbook']['image_extension']}")):
+			echo $this->Html->image("/img/site/lookbooks/{$data['Lookbook']['id']}.{$data['Lookbook']['image_extension']}",array('class'=>'img img-responsive upload-image-thumbnail'))."<br>";
 		endif;
 		
 		echo $this->Form->button('Reset',array('type'=>'reset', 'class'=>'btn btn-warning','label'=>false,'div'=>false));

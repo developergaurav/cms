@@ -27,10 +27,11 @@ class SitesController extends TimeoutAppController {
 				'client_registration',
 				'client_login',
 				'client_profile',
-				'check_crrrent_password',
+				'check_current_password',
 				'update_password',
 				'lookbook',
-				'homeblock'
+				'homeblock',
+				'gallery'
 			)
 		);
 		
@@ -44,7 +45,7 @@ class SitesController extends TimeoutAppController {
 	public function client_registration(){
 		
 		if($this->request->is('post')){
-			$data =  $this->request->input('json_decode',true);
+			$data =  $this->request->data;
 			$cilentData = array();
 			foreach($data as $key => $value){
 				if($value['name'] != 'repassword'){
@@ -65,6 +66,17 @@ class SitesController extends TimeoutAppController {
 				$return_data['message'] = 'Already registered.';
 			}else{
 				if($this->Client->save($cilentData)){
+					/*
+					//send email
+					$emailConfig['from_email'] = 'zaman@uysys.com';
+					$emailConfig['from_name'] = 'www.timeout.com';
+					$emailConfig['to'] = $cilentData['Client']['username'];
+					$emailConfig['subject'] = 'Registration';
+					$emailConfig['template'] = 'registration';
+					$emailConfig['data'] = $cilentData;
+					$this->EmailSender->sendEmail();
+					*/
+					
 					$return_data = array();
 					$return_data['status'] = 'success';
 					$return_data['message'] = 'Registration has been completed.';
@@ -138,9 +150,11 @@ class SitesController extends TimeoutAppController {
  */	
 	public function client_profile(){
 		if($this->request->is('post')){
-			$data =  $this->request->input('json_decode',true);
+			$data =  $this->request->data;
+			
 			//get current profile
 			if($data['action'] == 'get_data'){
+				
 				$profile_data = $this->Client->find(
 					'first',
 					array(
@@ -149,6 +163,8 @@ class SitesController extends TimeoutAppController {
 							)
 					)
 				);
+				
+				
 				
 				$this->set(
 					array(
@@ -183,16 +199,21 @@ class SitesController extends TimeoutAppController {
 					)
 				);
 			}
+			
 		}
+		
+	
 		$this->render('json_render');
 	}
 
 	/*
 	 * check current password
 	 */
-	public function check_crrrent_password(){
+	public function check_current_password(){
+		
+		
 		if($this->request->is('post')){
-			$post_data =  $this->request->input('json_decode',true);
+			$post_data =  $this->request->data;
 			$current_data = $this->Client->find('first',array('conditions'=>array('id'=> $post_data['client_id'])));
 			$password_is_valid = $this->Client->processLogin($current_data['Client']['username'], $post_data['current_password']);
 			if($password_is_valid == 'error'){
@@ -213,6 +234,7 @@ class SitesController extends TimeoutAppController {
 		);
 		
 		$this->render('json_render');
+		
 	}
 
 /**
@@ -220,7 +242,7 @@ class SitesController extends TimeoutAppController {
  */	
 	public function update_password(){
 		if($this->request->is('post')){
-			$post_data =  $this->request->input('json_decode',true);
+			$post_data =  $this->request->data;
 			$this->Client->id = $post_data['client_id'];
 			$update_data['Client']['password'] = $post_data['new_password'];
 			if($this->Client->save($update_data)){
@@ -287,6 +309,20 @@ class SitesController extends TimeoutAppController {
 					'_serialize',
 					'data' => array('homeblock'=>$response),
 					'_jsonp' => true
+				)
+		);
+	
+		$this->render('json_render');
+	}
+	
+	//look book
+	public function gallery(){
+		$response = ClassRegistry::init('Timeout.Gallery')->find('all');//,array('order'=>array('order'=>'asc')));
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('gallery'=>$response),
+						'_jsonp' => true
 				)
 		);
 	

@@ -14,7 +14,7 @@
 	<div class="col-md-12">
 	<?php 
 	echo $this->Form->create('HomeBlock',array('class'=>'form','type'=>'file')); 
-		echo $this->Form->input('image',array('onchange'=>'catUploadThumb(this)', 'type'=>'file','required'=>true, 'div'=>array('class'=>'form-group')));
+		echo $this->Form->input('image',array('onchange'=>'catUploadThumb(this)', 'type'=>'file', 'div'=>array('class'=>'form-group')));
 		
 		if(file_exists(WWW_ROOT."img/site/homeblock/{$this->request->data['HomeBlock']['id']}.{$this->request->data['HomeBlock']['image_extension']}")):
 			echo $this->Html->image("/img/site/homeblock/{$this->request->data['HomeBlock']['id']}.{$this->request->data['HomeBlock']['image_extension']}");

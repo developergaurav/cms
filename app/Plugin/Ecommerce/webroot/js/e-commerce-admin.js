@@ -57,14 +57,14 @@ function process_type_forms(type){
 	var all_categories = $('.category_ids');
 	var type_categories = new Array();
 	$.each(all_categories, function(ind,val){
-		var type_cat = new Array()
+		var type_cat = new Array();
 		//console.log($(val).is(':checked'));
 		if($(val).is(':checked') == true){
 			type_cat.category_id = $(val).val();
 			type_categories.push(type_cat);
 			//type_data['Type']['TypeCategory'][ind]['category_id'] = $(val).val();
 		}
-	})
+	});
 	type_data['Type']['TypeCategory'] = type_categories;
 	
 	

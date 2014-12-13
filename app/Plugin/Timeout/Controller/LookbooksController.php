@@ -82,8 +82,6 @@ class LookbooksController extends TimeoutAppController {
 			if(isset($data['Lookbook']['image']) && $data['Lookbook']['image']['error'] == 0){
 				$data['Lookbook']['image_extension'] = $this->Uploader->getFileExtension($data['Lookbook']['image']);
 				$this->Uploader->upload($data['Lookbook']['image'], $id, $data['Lookbook']['image_extension'], 'lookbooks',$fileOrImage = null, $height = '', $width = '900', $oldfile = null );
-			}else{
-				$data['Lookbook']['image_extension'] = '';
 			}
 			if ($this->Lookbook->save($data)) {
 				

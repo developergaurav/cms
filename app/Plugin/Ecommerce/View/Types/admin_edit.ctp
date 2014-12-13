@@ -12,7 +12,6 @@
 
 <div class="row bar bar-third">
 	<div class="col-md-12">
-	
 	<?php
 		$type_current_data = $this->request->data;
 		echo $this->Form->create('Type',array('class'=>'form','onsubmit'=>'process_type_forms("edit");return false;')); 
@@ -24,7 +23,16 @@
 			<div class="panel-title">Categories</div>
 		</div>
 		<div class="panel-body category-brand-box">
+		
 			<?php
+				echo $this->UyTree->printEcommerceCategoryTree($catNode,$category_has_types,$currentCategories);
+			?>
+			
+			
+			<?php
+			/*
+		
+			
 				static $j = 0;
 				foreach($productCategories as $c_id => $c_title):
 					foreach($type_current_data['TypeCategory'] as $type_category_index => $type_category_value ):
@@ -34,10 +42,23 @@
 							break;
 						endif;
 					endforeach;
-	
-					echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Type.TypeCategory.{$j}.category_id",array('class'=>'category_ids','type'=>'checkbox','value'=>$c_id,'label'=>false,'checked'=>$checked, 'div'=>false))." {$c_title}</label>";
+					
+					//check free or not free
+					if(array_key_exists($c_id, $category_has_types)):
+						if($checked == true):
+							echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Type.TypeCategory.{$j}.category_id",array('class'=>'category_ids','type'=>'checkbox','value'=>$c_id,'label'=>false,'checked'=>$checked,'div'=>false))." {$c_title}</label>";
+						else:
+							echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Type.TypeCategory.{$j}.category_id",array('class'=>'category_ids','type'=>'checkbox','value'=>$c_id,'label'=>false,'checked'=>$checked,'disabled' => true, 'div'=>false))." {$c_title}</label>";
+						endif;
+						
+					else:
+						echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Type.TypeCategory.{$j}.category_id",array('class'=>'category_ids','type'=>'checkbox','value'=>$c_id,'label'=>false,'checked'=>$checked, 'div'=>false))." {$c_title}</label>";
+					endif;
+					
 				$j++;
 				endforeach;
+				
+				*/
 			?>
 		</div>
 	</div>

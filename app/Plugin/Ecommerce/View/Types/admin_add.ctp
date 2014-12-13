@@ -20,16 +20,13 @@
 		<!-- Category list show-->
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<div class="panel-title">Categories</div>
+					<div class="panel-title">Categories (disabled category has types already)</div>
 				</div>
 				<div class="panel-body category-brand-box">
+				
 					<?php 
-						static $j = 0;
-							foreach($productCategories as $c_id => $c_title):
-								echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Type.TypeCategory.{$j}.category_id",array('class'=>'category_ids', 'type'=>'checkbox','value'=>$c_id,'label'=>false,'div'=>false))." {$c_title}</label>";
-							$j++;
-						endforeach;
-						?>
+						echo $this->UyTree->printEcommerceCategoryTree($catNode,$category_has_types);
+					?>
 				</div>
 			</div>
 		<!-- End show category list-->

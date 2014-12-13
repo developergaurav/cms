@@ -187,11 +187,14 @@
 					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> Home Designer <i class="fa fa-chevron-down pull-right"></i>','#HomeManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
-			<div id="HomeManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('timeout'),'controllers'=>array('home_blocks')));?>">
+			<div id="HomeManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('timeout'),'controllers'=>array('home_blocks','galleries')));?>">
 				<div class="panel-body panel-body-custom">
 					<ul class="left-bar-menu-ul">
 						<li>
 							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Blocks',['controller'=>'home_blocks','action'=>'index','admin'=>true,'plugin'=>'timeout'],['escape'=>false]);?>
+						</li>
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Gallery',['controller'=>'galleries','action'=>'index','admin'=>true,'plugin'=>'timeout'],['escape'=>false]);?>
 						</li>
 						
 					</ul>

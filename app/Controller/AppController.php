@@ -60,11 +60,8 @@ class AppController extends Controller {
 			[
 			'controller'	=> 'site_settings',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
-			],
-			[
-			'controller'	=> 'home_blocks',
-			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
+			
 		],
 		
 		//ecommerece
@@ -108,10 +105,6 @@ class AppController extends Controller {
 			[
 			'controller'	=> 'product_orders',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
-			],
-			[
-			'controller'	=> 'lookbooks',
-			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
 		],
 		//blog
@@ -128,6 +121,21 @@ class AppController extends Controller {
 			'controller'	=> 'comments',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
+		],
+		
+		'timeout' => [
+			[
+			'controller'	=> 'lookbooks',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'home_blocks',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'galleries',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+		]
 		]
 	];
 	

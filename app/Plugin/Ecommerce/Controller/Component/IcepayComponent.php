@@ -38,8 +38,8 @@ class IcepayComponent extends Component {
 		     $basicmode->setMerchantID($this->merchantId)     
 		             ->setSecretCode($this->secrectCode)
 		             ->validatePayment($paymentObj)
-		     		 ->setSuccessURL("http://localhost:9000/#/shop/order/{$order_id}")
-		     		 ->setSuccessURL("http://localhost:9000/#/shop/order/{$order_id}");
+		     		 ->setSuccessURL("http://timeoutstore.com/#/shop/order/{$order_id}")
+		     		 ->setSuccessURL("http://timeoutstore.com/#/shop/order/{$order_id}");
 		 
 		 $payNowUrl = $basicmode->getURL();
 		

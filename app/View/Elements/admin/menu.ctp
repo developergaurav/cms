@@ -103,11 +103,11 @@
 					<?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> Shop Manager <i class="fa fa-chevron-down pull-right"></i>','#shopManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
-			<div id="shopManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('brands','categories','products','types','attributes','attribute_values','attribute_labels','stores')));?>">
+			<div id="shopManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('brands','categories','products','types','attributes','attribute_values','shipping_methods','stores')));?>">
 				<div class="panel-body panel-body-custom">
 					<ul class="left-bar-menu-ul">
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-glass"></i> Products',['controller'=>'products','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
+							<?php echo $this->Html->link('<i class="fa fa-qrcode"></i> Products',['controller'=>'products','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
 						</li>
 					
 						<li>
@@ -115,11 +115,11 @@
 						</li>
 						
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-filter"></i> Categories',['controller'=>'categories','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
+							<?php echo $this->Html->link('<i class="fa fa-leaf"></i> Categories',['controller'=>'categories','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
 						</li>
 						
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-filter"></i> Stores',['controller'=>'stores','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
+							<?php echo $this->Html->link('<i class="fa fa-stop"></i> Stores',['controller'=>'stores','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
 						</li>
 						
 						<li>
@@ -127,11 +127,11 @@
 								<h4 class="panel-title">
 									<?php echo $this->Html->link('<i class="fa fa-cogs"></i> Configurations <i class="fa fa-chevron-down pull-right"></i>','#webShopConfiguration',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu-shop"]);?>
 								</h4>
-								<div id="webShopConfiguration" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('types','attribute_labels')));?>">
+								<div id="webShopConfiguration" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('types','shipping_methods')));?>">
 									<ul class="left-bar-menu-ul">
 										<li>
 											<?php echo $this->Html->link('<i class="fa fa-tags"></i> Type configuration',['controller'=>'types','action'=>'index','admin'=>true,'plugin'=>'ecommerce'],['escape'=>false]);?>
-										</li>										
+										</li>
 									</ul>
 								</div>
 							</div>
@@ -145,7 +145,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
-					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> Order Manager <i class="fa fa-chevron-down pull-right"></i>','#OrderManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
+					<?php echo $this->Html->link('<i class="fa fa-barcode"></i> Order Manager <i class="fa fa-chevron-down pull-right"></i>','#OrderManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
 			<div id="OrderManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('ecommerce'),'controllers'=>array('product_orders')));?>">
@@ -160,12 +160,39 @@
 			</div>
 		</div>
 		
+		<!-- shipping manager -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<?php echo $this->Html->link('<i class="fa fa-rocket"></i> Ship Manager <i class="fa fa-chevron-down pull-right"></i>','#shipManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
+				</h4>
+			</div>
+			<div id="shipManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('shipping'),'controllers'=>array('countries','cities','channels')));?>">
+				<div class="panel-body panel-body-custom">
+					<ul class="left-bar-menu-ul">
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Country',['controller'=>'countries','action'=>'index','admin'=>true,'plugin'=>'shipping'],['escape'=>false]);?>
+						</li>
+						
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> City',['controller'=>'cities','action'=>'index','admin'=>true,'plugin'=>'shipping'],['escape'=>false]);?>
+						</li>
+						
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Channels',['controller'=>'channels','action'=>'index','admin'=>true,'plugin'=>'shipping'],['escape'=>false]);?>
+						</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		
 		
 		<!-- LookBook manager -->
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
-					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> LookBook Manager <i class="fa fa-chevron-down pull-right"></i>','#lookbookManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
+					<?php echo $this->Html->link('<i class="fa fa-eye"></i> Lookbooks <i class="fa fa-chevron-down pull-right"></i>','#lookbookManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
 			<div id="lookbookManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('timeout'),'controllers'=>array('lookbooks')));?>">
@@ -180,11 +207,11 @@
 			</div>
 		</div>
 		
-		<!-- LookBook manager -->
+		<!-- Home manager -->
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
-					<?php echo $this->Html->link('<i class="fa fa-share-alt"></i> Home Designer <i class="fa fa-chevron-down pull-right"></i>','#HomeManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
+					<?php echo $this->Html->link('<i class="fa fa-pencil"></i> Home Designer <i class="fa fa-chevron-down pull-right"></i>','#HomeManager',['escape'=>false,'data-toggle'=>"collapse" ,'data-parent'=>"#accordion-menu"]);?>
 				</h4>
 			</div>
 			<div id="HomeManager" class="panel-collapse collapse <?php check_menu_active($current_location,array('plugins'=>array('timeout'),'controllers'=>array('home_blocks','galleries')));?>">
@@ -194,7 +221,9 @@
 							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Blocks',['controller'=>'home_blocks','action'=>'index','admin'=>true,'plugin'=>'timeout'],['escape'=>false]);?>
 						</li>
 						<li>
+
 							<?php echo $this->Html->link('<i class="fa fa-th-list"></i> Gallery',['controller'=>'galleries','action'=>'index','admin'=>true,'plugin'=>'timeout'],['escape'=>false]);?>
+
 						</li>
 						
 					</ul>
@@ -228,7 +257,7 @@
 		
 		
 
-		<!-- config manager -->
+		<!-- config manager 
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
@@ -249,5 +278,6 @@
 				</div>
 			</div>
 		</div>
+		-->
 	</div>
 </div>

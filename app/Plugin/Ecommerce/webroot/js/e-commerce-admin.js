@@ -74,7 +74,8 @@ function process_type_forms(type){
 		type_data['Type']['id'] = $('#TypeId').val();
 	    post_url = '../ajax_edit';
 	}
-
+	
+	
 	//post
 	$.ajax({
 		type	 : 'POST',

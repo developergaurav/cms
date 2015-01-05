@@ -138,20 +138,38 @@ class SitesController extends EcommerceAppController {
 	 * get random product list
 	 */
 	public function random_product_list(){
-		if($this->request->is('get')){
+		if($this->request->is('POST')){
+			$postData = $this->request->data;
+			if(isset($postData['pageNo'])){
+				$page = $postData['pageNo'];
+			}else{
+				$page = 1;
+			}
+			$limit = 20;
+			
 			$data = $this->Product->find(
 					'all',
 					array(
 							'conditions' => array('status' => 'active'),
 							'order'		 => array('created'=> 'asc'),
-							'limit'		 => 40
+							'limit'		 => $limit,
+							'page'		 => $page
 					)
 			);
-				
+			
+			$productList = array();
+			foreach($data as $key=>$val){
+				$checkData = json_decode($val['Product']['options'],true);
+				$val['Product']['options'] = $checkData;
+				array_push($productList, $val);
+			}
+			
+			$noOfProducts = $this->Product->find('count');
+			$pageNo = $this->paginationCalculator($noOfProducts,$limit);
 			$this->set(
 					array(
 							'_serialize',
-							'data' => array('ecommerce_product_list'=>$data),
+							'data' => array('ecommerce_product_list'=>$productList,'paginagtion'=>$pageNo),
 							'_jsonp' => true
 					)
 			);
@@ -168,6 +186,23 @@ class SitesController extends EcommerceAppController {
 		$this->render('json_render');
 	}
 
+	/*pagination*/
+	private function paginationCalculator($count,$limit){
+		$extraPage = $count%$limit;
+		$defaultPage = ($count -  ($count%$limit))/$limit;
+		if($extraPage > 0){
+			$noOfPage = $defaultPage + 1;
+		}else{
+			$noOfPage = $defaultPage;
+		}
+		
+		$pages = array();
+		for($i = 1; $i<= $noOfPage; $i++){
+			$pages[$i] = $i;
+		}
+		
+		return $pages;
+	}
 
 	/**
 	 * product_list_by_category
@@ -261,12 +296,13 @@ class SitesController extends EcommerceAppController {
 				'all',
 				array(
 						'contain' => array(
-								'ProductBrand',
-								'ProductCategory',
-								'ProductImage',
-								'ProductAttribute' => array(
-										'ProductAttributeValue'
-								)
+							'ProductBrand',
+							'ProductCategory',
+							'ProductImage',
+							'ProductAttribute' => array(
+									'ProductAttributeValue'
+							),
+							'RelatedProduct'
 						),
 						'conditions'	=> array(
 								'Product.id' 		=> $postData['productId'],
@@ -274,7 +310,30 @@ class SitesController extends EcommerceAppController {
 						)
 				)
 		);
-
+		$data[0]['Product']['options'] = json_decode($data[0]['Product']['options'],true);
+		
+		$relatedProducts =  $this->Product->find(
+			'all',
+			array(
+				'fields' => array(
+					'id','title','product_code','price'	
+				),
+				'contain' => 'ProductImage'		
+			)		
+		);
+		
+		
+		$relatedProductsList = array();
+		foreach($data[0]['RelatedProduct'] as $k=>$v){
+			$realtedProductId = $v['related_product'];
+			foreach($relatedProducts as $r_k => $r_v){
+				if($r_v['Product']['id'] == $realtedProductId){
+					array_push($relatedProductsList, $r_v);
+				}
+			}
+		}
+		$data[0]['RelatedProduct'] = $relatedProductsList;
+	
 		$this->set(
 				array(
 						'_serialize',
@@ -354,7 +413,7 @@ class SitesController extends EcommerceAppController {
 	public function shoping_history(){
 
 		if($this->request->is('post')){
-			$post_data =  $this->request->input('json_decode',true);
+			$post_data =  $this->request->data;//$this->request->input('json_decode',true);
 			$client_data = json_decode($post_data['client_details'],true);
 			$client_id = $client_data['Client']['id'];
 				
@@ -739,5 +798,56 @@ class SitesController extends EcommerceAppController {
 	}
 	
 	
-
+ //random deal list
+ 
+	public function random_deal_list(){
+		if($this->request->is('Post')){
+			$postData = $this->request->data;
+			if(isset($postData['pageNo'])){
+				$page = $postData['pageNo'];
+			}else{
+				$page = 1;
+			}
+			$limit = 20;
+				
+			$data = $this->Product->find(
+					'all',
+					array(
+						'conditions' => array('status' => 'active'),
+						'order'		 => array('created'=> 'asc'),
+						'limit'		 => $limit,
+						'page'		 => $page
+					)
+			);
+			
+			$productList =  array();
+			foreach($data as $key=>$val){
+				$checkData = json_decode($val['Product']['options'],true);
+				if($checkData['discount'][1]['amount'] > 0){
+					$val['Product']['options'] = $checkData;
+					array_push($productList, $val);
+				}
+			}
+			
+			//$noOfProducts = $this->Product->find('count');
+			$pageNo = $this->paginationCalculator(sizeof($productList),$limit);
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_product_list'=>$productList,'paginagtion'=>$pageNo),
+							'_jsonp' => true
+					)
+			);
+		}else{
+			$this->set(
+					array(
+							'_serialize',
+							'data' => array('ecommerce_product_list'=>'Invalid Request'),
+							'_jsonp' => true
+					)
+			);
+		}
+	
+		$this->render('json_render');
+	}
 }

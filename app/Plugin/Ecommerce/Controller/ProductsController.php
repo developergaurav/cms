@@ -50,45 +50,68 @@ class ProductsController extends EcommerceAppController {
 		if ($this->request->is('post')) {
 			
 			$data = $this->request->data;
-			
+			//process discount 
+			$data['Product']['options'] = json_encode(array('discount'=>$data['discount']));
+			unset($data['discount']);
+		
 			//remove uncheck brands
-			foreach($data['Product']['ProductBrand'] as $brand_ind => $brand_val){
-				if($brand_val['brand_id'] == 0){
-					unset($data['Product']['ProductBrand'][$brand_ind]);
+			if(isset($data['Product']['ProductBrand'])){
+				foreach($data['Product']['ProductBrand'] as $brand_ind => $brand_val){
+					if($brand_val['brand_id'] == 0){
+						unset($data['Product']['ProductBrand'][$brand_ind]);
+					}
 				}
 			}
 			
 			//remove uncheck categories
+			if(isset($data['Product']['ProductCategory'])){
+				foreach($data['Product']['ProductCategory'] as $category_ind => $category_val){
+					if($category_val['category_id'] == 0){
+						unset($data['Product']['ProductCategory'][$category_ind]);
+					}
+				}
+			}
 			
-			foreach($data['Product']['ProductCategory'] as $category_ind => $category_val){
-				if($category_val['category_id'] == 0){
-					unset($data['Product']['ProductCategory'][$category_ind]);
+			//remove uncheck related products
+			
+			if(isset($data['Product']['RelatedProduct'])){
+				foreach($data['Product']['RelatedProduct'] as $product_no => $related_product_id){
+					if($related_product_id['related_product'] == 0){
+						unset($data['Product']['RelatedProduct'][$product_no]);
+					}
 				}
 			}
 			//remove uncheck product attributes
-				
-			foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
-				if(!isset($attribute_value['attribute_id'])){
-					unset($data['Product']['ProductAttribute'][$attribute_ind]);
+			if(isset($data['Product']['ProductAttribute'])){
+				foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
+					if(!isset($attribute_value['attribute_id'])){
+						unset($data['Product']['ProductAttribute'][$attribute_ind]);
+					}
 				}
 			}
 				
 			//remove uncheck product attribute values
-			foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
-				foreach($attribute_value['ProductAttributeValue'] as $attributeValueId => $attributeValueValue ){
-					if(!isset($attributeValueValue['attribute_value_id'])){
-						unset($data['Product']['ProductAttribute'][$attribute_ind]['ProductAttributeValue'][$attributeValueId]);
+			if(isset($data['Product']['ProductAttribute'])){
+				foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
+					foreach($attribute_value['ProductAttributeValue'] as $attributeValueId => $attributeValueValue ){
+						if(!isset($attributeValueValue['attribute_value_id'])){
+							unset($data['Product']['ProductAttribute'][$attribute_ind]['ProductAttributeValue'][$attributeValueId]);
+						}
 					}
 				}
 			}
 			
 			//store image data
-			$temp_images = $data['Product']['ProductImage'];
-			unset($data['Product']['ProductImage']);
+			if(isset($data['Product']['ProductImage'])){
+				$temp_images = $data['Product']['ProductImage'];
+				unset($data['Product']['ProductImage']);
+				
 			
-			foreach ($temp_images as $key=>$value){
-			//	pr($value);
-				$data['Product']['ProductImage'][$key]['extension'] =$this->Uploader->getFileExtension($value);
+			
+				foreach ($temp_images as $key=>$value){
+				//	pr($value);
+					$data['Product']['ProductImage'][$key]['extension'] =$this->Uploader->getFileExtension($value);
+				}
 			}
 			
 			
@@ -115,6 +138,7 @@ class ProductsController extends EcommerceAppController {
 			}
 		}
 		
+		$this->set('productList',$this->Product->find('list'));
 		$this->set('productTypes', $this->getProductTypes());
 		$this->set('productBrands', $this->getProductBrands());
 		$this->set('productCategories', $this->getProductCategories());
@@ -136,52 +160,75 @@ class ProductsController extends EcommerceAppController {
 		if ($this->request->is(array('post', 'put'))) {
 			
 			$data = $this->request->data;
-			
+			//process discount
+			$data['Product']['options'] = json_encode(array('discount'=>$data['discount']));
+			unset($data['discount']);
 			////remove uncheck brands
-			foreach($data['Product']['ProductBrand'] as $brand_ind => $brand_val){
-				if($brand_val['brand_id'] == 0){
-					unset($data['Product']['ProductBrand'][$brand_ind]);
-				}
-			}
-				
-			//remove uncheck categories
-				
-			foreach($data['Product']['ProductCategory'] as $category_ind => $category_val){
-				if($category_val['category_id'] == 0){
-					unset($data['Product']['ProductCategory'][$category_ind]);
-				}
-			}
-				
-			//remove uncheck product attributes
-			
-			foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
-				if(!isset($attribute_value['attribute_id'])){
-					unset($data['Product']['ProductAttribute'][$attribute_ind]);
-				}
-			}
-			
-			//remove uncheck product attribute values
-			foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
-				foreach($attribute_value['ProductAttributeValue'] as $attributeValueId => $attributeValueValue ){
-					if(!isset($attributeValueValue['attribute_value_id'])){
-						unset($data['Product']['ProductAttribute'][$attribute_ind]['ProductAttributeValue'][$attributeValueId]);
+			if(isset($data['Product']['ProductBrand'])){
+				foreach($data['Product']['ProductBrand'] as $brand_ind => $brand_val){
+					if($brand_val['brand_id'] == 0){
+						unset($data['Product']['ProductBrand'][$brand_ind]);
 					}
 				}
 			}
-			//store images temporary.
-			$submitted_images = $data['Product']['ProductImage'];
-			unset($data['Product']['ProductImage']);
 			
-			$temp_images = array();
-			foreach($submitted_images as $temp_img_no => $temp_img_val){
-				if(isset($temp_img_val['id_extension'])){
-					$temp_image_id_extension_array = explode('#ZUBAYER#', $temp_img_val['id_extension']);
-					$temp_img_val['id'] = $temp_image_id_extension_array[0];
-					$temp_img_val['extension'] = $temp_image_id_extension_array[1];
-					unset($temp_img_val['id_extension']);
-				}
 				
-				$temp_images[$temp_img_no] = $temp_img_val;
+			//remove uncheck categories
+			if(isset($data['Product']['ProductCategory'])){
+				foreach($data['Product']['ProductCategory'] as $category_ind => $category_val){
+					if($category_val['category_id'] == 0){
+						unset($data['Product']['ProductCategory'][$category_ind]);
+					}
+				}
+			}
+			
+			//remove uncheck related products
+				
+			if(isset($data['Product']['RelatedProduct'])){
+				foreach($data['Product']['RelatedProduct'] as $product_no => $related_product_id){
+					if($related_product_id['related_product'] == 0){
+						unset($data['Product']['RelatedProduct'][$product_no]);
+					}
+				}
+			}	
+			//remove uncheck product attributes
+			if(isset($data['Product']['ProductAttribute'])){
+				foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
+					if(!isset($attribute_value['attribute_id'])){
+						unset($data['Product']['ProductAttribute'][$attribute_ind]);
+					}
+				}
+			}
+			
+			
+			//remove uncheck product attribute values
+			if(isset($data['Product']['ProductAttribute'])){
+				foreach($data['Product']['ProductAttribute'] as $attribute_ind => $attribute_value){
+					foreach($attribute_value['ProductAttributeValue'] as $attributeValueId => $attributeValueValue ){
+						if(!isset($attributeValueValue['attribute_value_id'])){
+							unset($data['Product']['ProductAttribute'][$attribute_ind]['ProductAttributeValue'][$attributeValueId]);
+						}
+					}
+				}
+			}
+			
+			//store images temporary.
+			if(isset($data['Product']['ProductImage'])){
+				$submitted_images = $data['Product']['ProductImage'];
+				unset($data['Product']['ProductImage']);
+				$temp_images = array();
+					
+				foreach($submitted_images as $temp_img_no => $temp_img_val){
+					if(isset($temp_img_val['id_extension'])){
+						$temp_image_id_extension_array = explode('#ZUBAYER#', $temp_img_val['id_extension']);
+						$temp_img_val['id'] = $temp_image_id_extension_array[0];
+						$temp_img_val['extension'] = $temp_image_id_extension_array[1];
+						unset($temp_img_val['id_extension']);
+					}
+				
+					$temp_images[$temp_img_no] = $temp_img_val;
+				}
+					
 			}
 			
 			//delete first
@@ -211,25 +258,40 @@ class ProductsController extends EcommerceAppController {
 				'contain' => array(
 					'ProductCategory',
 					'ProductBrand',
+					'RelatedProduct',
 					'ProductAttribute' => array(
 						'ProductAttributeValue'		
 					),
 					'ProductImage'
 				)
 			);
-			$request_data = $this->Product->find('first', $options);
+			
+			$getCurrentDetails  = $this->Product->find('first', $options);
+			$discountDetails = json_decode($getCurrentDetails['Product']['options'],true);
+			
+			$getCurrentDetails['discount'] = $discountDetails['discount']; 
+			
+			$request_data =  $getCurrentDetails; //$this->Product->find('first', $options);
 						
-			//brans list
+			//brands list
 			$selected_Brands = array();
 			foreach($request_data['ProductBrand'] as $key=>$value ){
 				$selected_Brands[] = $value['brand_id'];
 			}
 			
-			//brans list
+			//category list
 			$selected_Categories = array();
 			foreach($request_data['ProductCategory'] as $key=>$value ){
 				$selected_Categories[] = $value['category_id'];
 			}
+			
+			//related products list
+			$selected_related_products = array();
+			foreach($request_data['RelatedProduct'] as $key=>$value ){
+				$selected_related_products[] = $value['related_product'];
+			}
+			
+			$request_data['RelatedProduct'] = $selected_related_products;
 			$request_data['ProductBrand'] = $selected_Brands;
 			$request_data['ProductCategory'] = $selected_Categories;
 			//
@@ -238,6 +300,8 @@ class ProductsController extends EcommerceAppController {
 			$this->request->data = $request_data;
 		}
 		
+		
+		$this->set('productList',$this->Product->find('list',array('conditions'=>array('id !=' =>$id))));
 		$this->set('productTypes', $this->getProductTypes());
 		$this->set('productBrands', $this->getProductBrands());
 		$this->set('productCategories', $this->getProductCategories());

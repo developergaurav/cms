@@ -1,4 +1,5 @@
 <?php
+App::uses('Component', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
 class EmailSenderComponent extends Component {
 	

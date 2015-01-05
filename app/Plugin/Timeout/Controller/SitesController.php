@@ -14,7 +14,7 @@ class SitesController extends TimeoutAppController {
  *
  * @var array
  */
-	public $components = array('Session','RequestHandler');
+	public $components = array('Session','RequestHandler','EmailSender');
 	
 	public $uses = array('Timeout.Client');
 	
@@ -31,7 +31,8 @@ class SitesController extends TimeoutAppController {
 				'update_password',
 				'lookbook',
 				'homeblock',
-				'gallery'
+				'gallery',
+				'sendMail'
 			)
 		);
 		
@@ -66,16 +67,16 @@ class SitesController extends TimeoutAppController {
 				$return_data['message'] = 'Already registered.';
 			}else{
 				if($this->Client->save($cilentData)){
-					/*
+					
 					//send email
-					$emailConfig['from_email'] = 'zaman@uysys.com';
-					$emailConfig['from_name'] = 'www.timeout.com';
+					$emailConfig['from_email'] = 'info@timeoutstore.com'; //'joopdeyn@msn.com';
+					$emailConfig['from_name'] = 'www.timeoutstore.com';
 					$emailConfig['to'] = $cilentData['Client']['username'];
 					$emailConfig['subject'] = 'Registration';
 					$emailConfig['template'] = 'registration';
 					$emailConfig['data'] = $cilentData;
-					$this->EmailSender->sendEmail();
-					*/
+					$this->EmailSender->sendEmail($emailConfig);
+					
 					
 					$return_data = array();
 					$return_data['status'] = 'success';
@@ -322,6 +323,42 @@ class SitesController extends TimeoutAppController {
 				array(
 						'_serialize',
 						'data' => array('gallery'=>$response),
+						'_jsonp' => true
+				)
+		);
+	
+		$this->render('json_render');
+	}
+	
+	
+	public function sendMail(){
+		if($this->request->is('POST')){
+			$postData = $this->request->data;
+			
+			
+			$emailConfig['from_email'] = $postData[0]['value']; //'joopdeyn@msn.com';
+			$emailConfig['from_name'] = $postData[1]['value'];
+			$emailConfig['to'] = 'info@timeoutstore.com';
+			$emailConfig['subject'] = $postData[3]['value'];
+			$emailConfig['template'] = 'enquiry';
+			$emailConfig['data'] = $postData;
+			
+			
+		
+			$this->EmailSender->sendEmail($emailConfig);
+			$response['status'] = true;
+			$response['message'] = "Mail has been sent.";
+			
+		}else{
+			$response['status'] = false;
+			$response['message'] = "Invalid Request.";
+				
+		}
+	
+		$this->set(
+				array(
+						'_serialize',
+						'data' => array('sendEmail'=>$response),
 						'_jsonp' => true
 				)
 		);

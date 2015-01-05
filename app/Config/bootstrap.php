@@ -106,9 +106,11 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
-
+CakePlugin::load('Shipping', array('bootstrap' => false, 'routes' => false));
 CakePlugin::load('Ecommerce', array('bootstrap' => false, 'routes' => false));
 
 CakePlugin::load('Blog', array('bootstrap' => false, 'routes' => false));
 
 CakePlugin::load('Timeout', array('bootstrap' => false, 'routes' => false));
+
+

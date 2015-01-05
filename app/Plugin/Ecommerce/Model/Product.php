@@ -202,6 +202,19 @@ class Product extends EcommerceAppModel {
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+		),
+		'RelatedProduct' => array(
+				'className' => 'Ecommerce.RelatedProduct',
+				'foreignKey' => 'product_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 		)
 	);
 

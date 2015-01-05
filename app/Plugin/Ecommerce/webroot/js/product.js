@@ -118,8 +118,52 @@ product.controller('ProductAttributeController', ['$scope', function($scope) {
 	});
 	
 	$scope.$watch('db_selected_type_categories',function(ind,val){
-		console.log($scope.db_selected_type_categories)
+		//console.log($scope.db_selected_type_categories);
 	});
+}]);
+
+
+product.controller('discountController', ['$scope', function($scope) {
+	
+	$scope.salePrice = $scope.basePrice;
+	$scope.calculateDiscount = function(){
+		if($scope.discountType == 'fixed'){
+			$scope.finalDiscount = $scope.discountAmount;
+		}else if($scope.discountType == 'percentage'){
+			$scope.finalDiscount = parseFloat((parseFloat($scope.basePrice) *parseFloat($scope.discountAmount)) / 100).toFixed(2);
+		}else{
+			$scope.finalDiscount = 0;
+		}
+		
+		$scope.salePrice = $scope.basePrice - $scope.finalDiscount;
+	};
+	
+	
+	$scope.$watch('discountType',function(nv,ov){
+			if(angular.isUndefined($scope.discountType)){
+				$scope.discountType = $('.discountType').attr('selectedValue');
+				$scope.calculateDiscount();
+			}else{
+				$scope.discountType =  nv;
+			}
+			
+	});
+	
+	$scope.$watch('finalDiscount',function(nv,ov){
+		if(nv != ov){
+			if(nv == 'NaN'){
+				$scope.finalDiscount  = 0;
+			}
+		}
+	});
+	
+	$scope.$watch('salePrice',function(nv,ov){
+		if(nv!=ov){
+			$scope.salePrice = nv.toFixed(2);
+		}
+	});
+	
+	
 }]);
 
 

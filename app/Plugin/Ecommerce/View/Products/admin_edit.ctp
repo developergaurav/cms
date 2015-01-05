@@ -18,31 +18,42 @@
 	?>
 	
 
-	<div class="row">
-		<div class="col-md-6">
-			<?php
-				echo $this->Form->input('product_code',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('id',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
-				echo $this->Form->input('price',array('label'=>'Base Price', 'min'=>0, 'class'=>'form-control','div'=>array('class'=>'form-group')));
-			?>
-		</div>
-		<div class="col-md-6">
-			<div class="row">
-				<div class="col-md-12">
-				<?php
-					echo $this->Form->input('description',array('type'=>'textarea','class'=>'editor form-control','div'=>array('class'=>'form-group')));
-				?>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	
 	<div class = "row">
-		<div class="col-md-12">
-			<div ng-app='product' ng-controller='ProductAttributeController' class="AttrDataHolder" attribute_array ='<?php echo $productAttributes;?>'>
+		<div class="col-md-12" data-ng-app='product'>
+		
+				<div class="row"  data-ng-controller='discountController'>
+					<div class="col-md-6">
+						<?php
+							echo $this->Form->input('product_code',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('id',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('title',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('meta_keys',array('class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('meta_description',array('type'=>'textarea', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('quantity',array('type'=>'number', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('price',array('data-ng-init'=>"basePrice = {$this->request->data['Product']['price']} ",'label'=>'Base Price','data-ng-change'=>'calculateDiscount()','min'=>'0','data-ng-model'=>'basePrice', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('discount.0.type',array('selectedValue'=>$this->request->data['discount'][0]['type'], 'data-ng-change'=>'calculateDiscount()','data-ng-model'=>'discountType','options'=>array('fixed'=>'Fixed','percentage'=>'Percentage'), 'label'=>'Discount Type', 'class'=>'form-control discountType','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('discount.1.amount',array('data-ng-init'=>"discountAmount = {$this->request->data['discount'][1]['amount']}",'type'=>'number','min'=>'0', 'data-ng-change'=>'calculateDiscount()','label'=>'Discount Amount','data-ng-model'=>'discountAmount', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+							echo $this->Form->input('discount.2.finalDiscount',array('readonly'=>true, 'value'=>'{{finalDiscount}}', 'type'=>'number','label'=>'Discount', 'class'=>'form-control','div'=>array('class'=>'form-group')));
+						?>
+						<div class="group-control">
+							<strong>Base Price : </strong>{{basePrice}} EUR
+							<strong>Discount : </strong>{{finalDiscount}} EUR
+							<strong>Sale Price : </strong>{{salePrice}} EUR
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12">
+							<?php
+								echo $this->Form->input('description',array('type'=>'textarea','class'=>'editor form-control','div'=>array('class'=>'form-group')));
+							?>
+							</div>
+						</div>
+					</div>
+				</div>
+			<div  data-ng-controller='ProductAttributeController' class="AttrDataHolder" attribute_array ='<?php echo $productAttributes;?>'>
 			<?php
 				$option_values = json_encode($productTypes);
 				echo $this->Form->input('type_id',array('type'=>'select', 'type_categories' => json_encode($productCategories), 'options'=>$productTypes, 'ng-change'=>'checkProductType()','ng-model'=>'productType', 'option_values'=>$option_values, 'required'=>true,'class'=>'form-control product_type','selected_value'=>$this->request->data['Product']['type_id'], 'div'=>array('class'=>'form-group')));
@@ -87,6 +98,33 @@
 						</div>
 					</div>
 				</div>
+				
+				
+					
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Related Products</div>
+							</div>
+							<div class="panel-body category-brand-box">
+								<?php 
+									static $j = 0;
+									foreach($productList as $related_product => $name):
+										if(array_search("{$related_product}", $prduct_current_data['RelatedProduct']) === false){
+											$checked = false;
+										}else{
+											$checked = true;
+										}
+										echo "<label class='checkbox' style='margin-left : 20px;'>".$this->Form->input("Product.RelatedProduct.{$j}.related_product",array('type'=>'checkbox','value'=>$related_product,'checked'=>$checked, 'label'=>false,'div'=>false))." {$name}</label>";
+									$j++;
+									endforeach;
+								?>
+							</div>
+						</div>
+					</div>
+				</div>
+			
 			
 			</div>
 			

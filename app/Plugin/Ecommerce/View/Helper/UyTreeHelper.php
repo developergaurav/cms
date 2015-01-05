@@ -48,6 +48,4 @@ class UyTreeHelper extends AppHelper{
 			return $html;
 		}
 	}
-	
-
 }

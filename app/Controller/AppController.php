@@ -32,6 +32,7 @@ class AppController extends Controller {
 				'authorize' => array('Controller'),
 				//'authError' => 'You don\'t have permission to access those area.',
 			),
+			'RequestHandler'
 	);
 	
 	public $acl_array = [
@@ -105,7 +106,29 @@ class AppController extends Controller {
 			[
 			'controller'	=> 'product_orders',
 			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'shipping_methods',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
 			]
+		],
+		
+		//shipping
+		'shipping' => [
+			[
+			'controller'	=> 'countries',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			[
+			'controller'	=> 'cities',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			],
+			
+			[
+			'controller'	=> 'channels',
+			'actions'		=> ['admin_index','admin_add','admin_edit','admin_generate_channels']
+			],
+			
 		],
 		//blog
 		'blog' => [

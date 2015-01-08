@@ -8,6 +8,7 @@
 	Router::connect('/ecommerce/sites/:action/*', array('plugin'=>'Ecommerce', 'controller' => 'sites'));
 	Router::connect('/blog/sites/:action/*', array('plugin'=>'Blog', 'controller' => 'sites'));
 	Router::connect('/timeout/sites/:action/*', array('plugin'=>'Timeout', 'controller' => 'sites'));
+	Router::connect('/shipping/apis/:action/*', array('plugin'=>'Shipping', 'controller' => 'apis'));
 	
 	//alow json extension
 	Router::parseExtensions('json');

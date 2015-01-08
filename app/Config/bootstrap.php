@@ -114,3 +114,5 @@ CakePlugin::load('Blog', array('bootstrap' => false, 'routes' => false));
 CakePlugin::load('Timeout', array('bootstrap' => false, 'routes' => false));
 
 
+
+CakePlugin::load('Merchant', array('bootstrap' => false, 'routes' => false));

@@ -113,6 +113,14 @@ class AppController extends Controller {
 			]
 		],
 		
+		//merchant
+		'merchant' => [
+			[
+				'controller'	=> 'merchants',
+				'actions'		=> ['admin_index','admin_add','admin_edit','admin_delete']
+			]
+		],
+		
 		//shipping
 		'shipping' => [
 			[
